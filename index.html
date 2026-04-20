@@ -388,13 +388,17 @@
   .cat-card:first-child .cat-img img {
     height: 190px;
   }
-  /* MPV — center it */
+  /* MPV — its image file has extra whitespace on left, nudge it back to center */
   .cat-card:nth-child(2) .cat-img {
     justify-content: center;
   }
   .cat-card:nth-child(2) .cat-img img {
     margin: 0 auto;
     display: block;
+    transform: translateX(-12px);
+  }
+  .cat-card:nth-child(2):hover .cat-img img {
+    transform: translateX(-12px) scale(1.08) rotate(-2deg);
   }
   .cat-name {
     font-family: 'Barlow Condensed', sans-serif;
@@ -1033,7 +1037,7 @@
       </div>
       <div class="cat-card reveal delay-1">
         <div class="cat-img">
-          <img src="image/mpv.png" alt="MPV">
+          <img src="image/mpv.svg" alt="MPV">
         </div>
         <h3 class="cat-name">MPV</h3>
         <p class="cat-desc" data-t="fleet.mpv.desc">Muatan keluarga dengan ruang luas untuk bagasi dan penumpang.</p>
@@ -1066,7 +1070,7 @@
         <a href="#contact" class="btn-primary" style="margin-top: 20px;" data-t="about.cta">Hubungi Kami</a>
       </div>
       <div class="about-img reveal-right">
-        <img src="image/mpv.png" alt="Car">
+        <img src="image/view.svg" alt="Car">
       </div>
     </div>
   </div>
