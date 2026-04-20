@@ -925,45 +925,73 @@
     .menu-toggle { display: block; }
 
     /* ---- HERO: keep desktop-style 2-col layout on mobile ---- */
-    .hero { padding: 30px 0 90px; overflow: visible; }
+    .hero { padding: 30px 0 90px; overflow: hidden; }
     .hero-grid {
       grid-template-columns: 1fr 1fr;
       gap: 0;
-      align-items: center;
+      align-items: stretch;
       position: relative;
+      min-height: 300px;
     }
-    /* Car column: let it overflow left over the text, like on desktop */
+    .hero-grid > div:first-child {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
     .hero-img {
-      height: auto;
-      min-height: 220px;
-      order: 1;          /* keep car on the right */
       position: relative;
       overflow: visible;
+      order: 1;
     }
     .hero-img img {
       position: absolute;
-      right: -30px;
+      left: 50%;
       top: 50%;
-      transform: translateY(-50%);
-      width: 160%;       /* overflow left to overlap title */
+      transform: translate(-50%, -50%);
+      width: 200%;
       height: auto;
       max-width: none;
       animation: bobMobile 6s ease-in-out infinite;
     }
     @keyframes bobMobile {
-      0%, 100% { transform: translateY(-50%) translateY(0px); }
-      50% { transform: translateY(-50%) translateY(-10px); }
+      0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+      50% { transform: translate(-50%, -50%) translateY(-12px); }
     }
-    .hero-title { font-size: clamp(38px, 11vw, 80px); }
+    .hero-title { font-size: clamp(58px, 16vw, 100px); line-height: 0.88; }
     .hero-sub { font-size: 13px; margin: 14px 0; }
     .hero-cta { gap: 10px; }
 
     .about-grid, .resp-grid, .contact { grid-template-columns: 1fr; gap: 30px; }
     .about-img img { width: 100%; margin-left: 0; max-width: 480px; margin: 0 auto; display: block; height: 280px; object-fit: contain; }
-    /* Fix SVG images not showing on mobile — remove mix-blend-mode:multiply */
-    .cat-img img { mix-blend-mode: normal; width: 100%; height: auto; max-height: 200px; object-fit: contain; transform: translateY(-8px); }
-    .cat-card:nth-child(2) .cat-img img { transform: none; margin: 0 auto; }
-    .cat-card:nth-child(2):hover .cat-img img { transform: translateY(-16px) scale(1.08); }
+    /* Fleet cards: bigger images, centered, no overflow */
+    .cat-card { overflow: hidden; padding-top: 30px; }
+    .cat-img {
+      height: 220px;
+      margin-top: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--soft);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .cat-img img {
+      mix-blend-mode: normal;
+      width: 85%;
+      height: 190px;
+      object-fit: contain;
+      transform: none !important;
+      position: relative;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+    .cat-img::after { display: none; }
+    .cat-card:hover .cat-img img { transform: scale(1.06) !important; }
     .resp-center img { width: 100%; max-width: 520px; margin: 0 auto; display: block; }
     .resp-grid > div:last-child { order: 3; }
     .cat-grid, .pickup-grid { grid-template-columns: 1fr; }
@@ -983,15 +1011,13 @@
 
   @media (max-width: 480px) {
     .nav-inner { padding-right: 110px; }
-    .hero-title { font-size: clamp(28px, 9vw, 55px); }
+    .hero-title { font-size: clamp(46px, 14vw, 70px); }
     .hero-sub { font-size: 12px; margin: 10px 0; }
     .btn-ghost { font-size: 11px; }
     .footer-grid { grid-template-columns: 1fr; }
     .hero-cta { gap: 14px; }
     .btn-primary { padding: 12px 18px; font-size: 11px; letter-spacing: 0.8px; }
-    /* On very small screens, hero text needs z-index so it stays readable */
-    .hero-grid > div:first-child { position: relative; z-index: 3; }
-    .hero-img img { width: 140%; right: -20px; }
+    .hero-img img { width: 220%; }
   }
 </style>
 </head>
@@ -1154,17 +1180,17 @@
       </div>
       <div class="stats reveal-right">
         <div>
-          <div class="stat-num">5+</div>
+          <div class="stat-num" data-count="5" data-suffix="+">0</div>
           <div class="stat-label" data-t="stats.years">Tahun Pengalaman</div>
           <div class="stat-desc" data-t="stats.years.desc">Membantu pelancong menjelajah Langkawi dengan selesa.</div>
         </div>
         <div>
-          <div class="stat-num">300</div>
+          <div class="stat-num" data-count="300" data-suffix="">0</div>
           <div class="stat-label" data-t="stats.clients">Pelanggan Sebulan</div>
           <div class="stat-desc" data-t="stats.clients.desc">Pelancong tempatan dan antarabangsa mempercayai kami.</div>
         </div>
         <div>
-          <div class="stat-num">40</div>
+          <div class="stat-num" data-count="40" data-suffix="">0</div>
           <div class="stat-label" data-t="stats.cars">Kereta Tersedia</div>
           <div class="stat-desc" data-t="stats.cars.desc">Sedan, MPV, dan Van sentiasa bersedia untuk anda.</div>
         </div>
@@ -1808,6 +1834,36 @@
       try { localStorage.setItem('hjh_lang', id === 'lang-my' ? 'my' : 'en'); } catch(e) {}
     });
   });
+
+  // ============ COUNT-UP ANIMATION FOR STATS ============
+  function animateCount(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    const duration = 900; // ms — snappy, not too long
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+      el.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = '1';
+        animateCount(entry.target);
+        countObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-num[data-count]').forEach(el => countObserver.observe(el));
 </script>
 
 </body>
