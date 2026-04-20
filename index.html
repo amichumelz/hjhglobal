@@ -981,6 +981,8 @@
       position: relative;
       min-height: 280px;
     }
+    /* hero-img must match grid height — no phantom 560px box from desktop */
+    .hero-img { height: 280px !important; }
     .hero-grid > div:first-child {
       position: relative;
       z-index: 3;
@@ -993,6 +995,8 @@
       position: relative;
       overflow: visible;
       order: 1;
+      height: auto;
+      min-height: 0;
     }
     .hero-img img {
       position: absolute;
@@ -1251,6 +1255,11 @@
     .about-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 14px; }
   }
 </style>
+<script>
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  window.addEventListener('load', function() { window.scrollTo(0, 0); });
+  window.addEventListener('beforeunload', function() { window.scrollTo(0, 0); });
+</script>
 </head>
 <body>
 
@@ -1608,12 +1617,6 @@
 </div>
 
 <script>
-
-  // Force scroll to top on every page load (prevent browser restoring hash position)
-  if (history.scrollRestoration) {
-    history.scrollRestoration = 'manual';
-  }
-  window.scrollTo(0, 0);
 
   // ============ I18N ============
   const I18N = {
