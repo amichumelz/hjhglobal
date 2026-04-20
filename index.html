@@ -924,16 +924,16 @@
     .nav-links, .nav-social { display: none; }
     .menu-toggle { display: block; }
 
-    /* ---- HERO: keep desktop-style 2-col layout on mobile ---- */
-    .hero { padding: 16px 0 70px; overflow: hidden; }
-    .hero::before { top: -60px; }
-    .hero-label { margin-bottom: 10px; font-size: 13px; }
+    /* ---- HERO: zero gap, tight layout on mobile ---- */
+    .hero { padding: 0 0 70px; overflow: hidden; }
+    .hero::before { display: none; }
+    .hero-label { margin-bottom: 6px; font-size: 13px; margin-top: 0; }
     .hero-grid {
       grid-template-columns: 1fr 1fr;
       gap: 0;
       align-items: stretch;
       position: relative;
-      min-height: 0;
+      min-height: 280px;
     }
     .hero-grid > div:first-child {
       position: relative;
@@ -941,6 +941,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding-top: 0;
     }
     .hero-img {
       position: relative;
@@ -962,50 +963,67 @@
       50% { transform: translate(-50%, -50%) translateY(-12px); }
     }
     .hero-title { font-size: clamp(58px, 16vw, 100px); line-height: 0.88; }
-    .hero-sub { font-size: 13px; margin: 10px 0; }
+    .hero-sub {
+      font-size: 13px;
+      margin: 8px 0;
+      position: relative;
+      z-index: 4;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 6px;
+      padding: 6px 8px;
+      max-width: 58%;
+    }
+    .hero-cta { position: relative; z-index: 4; }
     .hero-cta { gap: 10px; }
 
     .about-grid, .resp-grid, .contact { grid-template-columns: 1fr; gap: 30px; }
     .about-img img { width: 100%; margin-left: 0; max-width: 480px; margin: 0 auto; display: block; height: 280px; object-fit: contain; }
-    /* Fleet cards: full-width image, no grey box, just shadow + bob animation */
-    .cat-card { overflow: visible; padding-top: 20px; }
+    /* Fleet cards: huge image filling the card, no box, shadow + bob */
+    .cat-card { overflow: visible; padding: 16px 16px 32px; }
     .cat-img {
       height: 220px;
-      margin-top: 0;
+      margin-top: 0 !important;
       overflow: visible;
       display: flex;
       align-items: center;
       justify-content: center;
       background: transparent;
       border-radius: 0;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       position: relative;
     }
     .cat-img img {
       mix-blend-mode: normal;
-      width: 90%;
-      height: 200px;
+      width: 100% !important;
+      height: 210px !important;
+      max-height: none !important;
       object-fit: contain;
-      transform: translateY(0);
+      transform: translateY(0) !important;
       position: relative;
       display: block;
       margin: 0 auto;
-      filter: drop-shadow(0 18px 30px rgba(0,0,0,0.18)) drop-shadow(0 6px 12px rgba(0,0,0,0.10));
+      filter: drop-shadow(0 20px 36px rgba(0,0,0,0.20)) drop-shadow(0 8px 14px rgba(0,0,0,0.12));
       animation: bobCard 5s ease-in-out infinite;
       transition: filter 0.4s ease;
     }
     @keyframes bobCard {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+      0%, 100% { transform: translateY(0px) !important; }
+      50% { transform: translateY(-12px) !important; }
     }
-    .cat-img::after { display: none; }
+    .cat-img::after { display: none !important; }
     .cat-card:hover .cat-img img {
-      filter: drop-shadow(0 28px 44px rgba(0,0,0,0.26)) drop-shadow(0 10px 18px rgba(0,0,0,0.14));
+      filter: drop-shadow(0 30px 50px rgba(0,0,0,0.28)) drop-shadow(0 12px 20px rgba(0,0,0,0.15));
     }
     .resp-center img { width: 100%; max-width: 520px; margin: 0 auto; display: block; }
     .resp-grid > div:last-child { order: 3; }
     .cat-grid, .pickup-grid { grid-template-columns: 1fr; }
-    .section { padding: 70px 0; }
+    .section { padding: 30px 0 40px; }
+    .section-header { margin-bottom: 20px; }
+    /* Kill desktop negative margin-top on cat-img inside mobile */
+    #fleet .cat-img { margin-top: 0 !important; }
+    #fleet .cat-grid { padding-top: 0; }
     .contact-form { padding: 60px 24px; }
     .contact-visual { min-height: 260px; order: -1; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
