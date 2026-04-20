@@ -1070,8 +1070,21 @@
         <a href="#contact" class="btn-primary" style="margin-top: 20px;" data-t="about.cta">Hubungi Kami</a>
       </div>
       <div class="about-img reveal-right">
-        <img src="image/view.svg" alt="Car">
+        <img src="image/view.svg" alt="Car" class="about-view-img">
       </div>
+      .about-img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 340px;
+      }
+      .about-view-img {
+        height: 300px;
+        width: auto;
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+      }
     </div>
   </div>
 </section>
