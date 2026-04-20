@@ -512,6 +512,138 @@
   }
   .cat-btn:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,184,46,0.4); }
 
+  /* ============ TOURS ============ */
+  .tour-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-top: 40px;
+  }
+  .tour-card {
+    background: white;
+    border: 1px solid var(--line);
+    padding: 0;
+    text-align: left;
+    transition: all 0.4s ease;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .tour-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    border-color: var(--yellow);
+  }
+  .tour-visual {
+    background: var(--soft);
+    padding: 0;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+  }
+  .tour-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: block;
+    background: white;
+  }
+  .tour-duration {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--ink);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+  }
+  .tour-body {
+    padding: 30px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .tour-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .tour-desc {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .tour-meta {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    background: var(--soft);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+  }
+  .tour-meta-row {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .tour-meta-label {
+    font-weight: 700;
+    color: var(--blue-dark);
+    min-width: 82px;
+  }
+  .tour-includes {
+    list-style: none;
+    margin-bottom: 24px;
+    flex: 1; /* Pushes footer to the bottom */
+  }
+  .tour-includes li {
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    padding-left: 24px;
+    position: relative;
+  }
+  .tour-includes li::before {
+    content: '✓';
+    color: var(--wa-dark);
+    font-weight: 900;
+    position: absolute;
+    left: 0; top: 0;
+  }
+  .tour-footer {
+    border-top: 1px dashed var(--line);
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .tour-price {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .tour-price strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--blue);
+  }
+
   /* ============ ABOUT ============ */
   .about { background: var(--soft); padding-bottom: 30px; }
   .about-grid {
@@ -1121,6 +1253,7 @@
     .resp-center img { width: 100%; max-width: 520px; margin: 0 auto; display: block; }
     .resp-grid > div:last-child { order: 3; }
     .cat-grid, .pickup-grid { grid-template-columns: 1fr; }
+    .tour-grid { grid-template-columns: 1fr; }
   .section { padding: 50px 0 20px 0; }
     .section-header { margin-bottom: 20px; }
     /* Kill desktop negative margin-top on cat-img inside mobile */
@@ -1281,6 +1414,58 @@
     .about-text { font-size: 14px; margin-bottom: 12px; line-height: 1.6; }
     .about-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 14px; }
   }
+
+  @media (max-width: 900px) {
+    /* Premium mobile motion for tour + pickup cards */
+    .tour-card,
+    .pickup-card {
+      opacity: 0;
+      transform: translateY(34px) scale(0.97);
+      transition: opacity 0.65s cubic-bezier(.22,.61,.36,1), transform 0.65s cubic-bezier(.22,.61,.36,1), box-shadow 0.35s ease;
+    }
+    .tour-card.mobile-in,
+    .pickup-card.mobile-in {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .tour-card {
+      overflow: hidden;
+    }
+    .tour-card .tour-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+      transform: translateX(-120%);
+      pointer-events: none;
+    }
+    .tour-card.mobile-in .tour-visual::after {
+      animation: tourSweep 0.95s ease 0.25s forwards;
+    }
+    @keyframes tourSweep {
+      0% { transform: translateX(-120%); opacity: 1; }
+      100% { transform: translateX(150%); opacity: 0; }
+    }
+    .tour-icon {
+      transition: transform 1.2s ease, filter 1.2s ease;
+    }
+    .tour-card.mobile-in .tour-icon {
+      transform: scale(1.06);
+      filter: saturate(1.08) contrast(1.04);
+    }
+    .tour-card:active,
+    .pickup-card:active {
+      transform: scale(0.98);
+      transition: transform 0.12s ease;
+    }
+    #tourTotalPrice.price-pop {
+      animation: totalPop 0.3s ease;
+    }
+    @keyframes totalPop {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  }
 </style>
 <script>
   if (history.scrollRestoration) history.scrollRestoration = 'manual';
@@ -1307,19 +1492,26 @@
   <div class="nav-inner">
     <a href="index.html" class="logo">HJH<span class="accent">GLOBAL</span></a>
     <ul class="nav-links">
-      <li><a href="#about" data-t="nav.about">About Us</a></li>
+      <li><a href="#intro" data-t="nav.home">Home</a></li>
       <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
+      <li><a href="#tours" data-t="nav.tours">Tour Packages</a></li>
       <li><a href="#pickup" data-t="nav.pickup">Pickup Service</a></li>
       <li><a href="#contact" data-t="nav.contact">Contact</a></li>
     </ul>
-    <div class="nav-social">
-      <a href="#" aria-label="Facebook">f</a>
-      <a href="#" aria-label="Instagram">◉</a>
-      <a href="https://wa.me/601159658910" aria-label="WhatsApp" target="_blank" rel="noopener">✆</a>
-    </div>
     <button class="menu-toggle" aria-label="Menu">☰</button>
   </div>
 </nav>
+
+<!-- INTRODUCTION -->
+<section class="section" id="intro" style="background: var(--soft); text-align: center;">
+  <div class="container">
+    <div class="section-header" style="margin-bottom: 0; max-width: 760px; margin-left: auto; margin-right: auto;">
+      <div class="section-label reveal" data-t="intro.label">Selamat Datang</div>
+      <h2 class="section-title reveal delay-1" data-t="intro.title">Sewa Kereta & Pakej Percutian</h2>
+      <p class="about-text reveal delay-2" style="margin-top: 24px; font-size: 17px;" data-t="intro.desc">Lebih dari sekadar sewa kereta! Kami menyediakan perkhidmatan kereta sewa yang selesa serta pelbagai pakej pelancongan menarik untuk melengkapkan percutian anda di Langkawi. Jelajah dengan tenang bersama HJH Global.</p>
+    </div>
+  </div>
+</section>
 
 <!-- HERO -->
 <section class="hero">
@@ -1383,22 +1575,89 @@
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="about section" id="about">
+<!-- TOUR PACKAGES -->
+<section class="section" id="tours">
   <div class="container">
-    <div class="about-grid">
-      <div class="reveal-left">
-        <div class="section-label" data-t="about.label">Meet HJH Global</div>
-        <h2 class="about-title" data-t="about.title">About Us</h2>
-        <p class="about-lead" data-t="about.lead">Rakan sewa kereta yang anda boleh percayai sepanjang percutian di Langkawi.</p>
-        <p class="about-text" data-t="about.p1">HJH Global menawarkan servis sewa kereta mesra pelanggan di seluruh Pulau Langkawi. Dari Sedan untuk perjalanan ringkas, MPV untuk keluarga, hingga Van untuk rombongan besar — kami ada pilihan yang sesuai untuk setiap keperluan anda.</p>
-        <p class="about-text" data-t="about.p2">Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup <b>berbayar</b> di lapangan terbang, hotel dan jeti (<b>RM20/trip</b>). Anda hanya perlu sampai — kami uruskan yang lain.</p>
-        <a href="#contact" class="btn-primary" style="margin-top: 20px;" data-t="about.cta">Hubungi Kami</a>
+    <div class="section-header">
+      <div class="section-label reveal" data-t="tours.label">Pilihan Aktiviti</div>
+      <h2 class="section-title reveal delay-1" data-t="tours.title">Pakej Pelancongan</h2>
+    </div>
+    <div class="tour-grid">
+      <div class="tour-card reveal">
+        <div class="tour-visual">
+          <div class="tour-duration" data-t="tours.island.dur">Tempoh: 4 Jam</div>
+          <img class="tour-icon" src="image/tour-island.jpg" alt="Island Hopping">
+        </div>
+        <div class="tour-body">
+          <h3 class="tour-name" data-t="tours.island.name">Island Hopping</h3>
+          <p class="tour-desc" data-t="tours.island.desc">Pakej santai untuk yang pertama kali ke Langkawi, fokus pada pulau popular dan masa bergambar.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.slot">Slot:</span><span data-t="tours.island.slot">Pagi 9:00 AM atau petang 2:00 PM</span></div>
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.meet">Meeting:</span><span data-t="tours.island.meet">Jeti Teluk Baru (10 minit awal)</span></div>
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.suitable">Sesuai:</span><span data-t="tours.island.suitable">Keluarga, pasangan, dan kumpulan kecil</span></div>
+          </div>
+          <ul class="tour-includes">
+            <li data-t="tours.island.inc1">Lawatan ke 3 buah pulau</li>
+            <li data-t="tours.island.inc2">Tasik Dayang Bunting & Beras Basah</li>
+            <li data-t="tours.island.inc3">Termasuk jaket keselamatan</li>
+            <li data-t="tours.island.inc4">Nota: makan/minum tidak termasuk</li>
+          </ul>
+          <div class="tour-footer">
+            <div class="tour-price" data-t="tours.island.price">Bermula <strong>RM45</strong>/pax</div>
+            <button type="button" class="btn-primary" style="padding: 10px 22px; font-size: 11px;" data-book="tour" data-tour="Island Hopping" data-tour-price="45" data-t="tours.book">Tempah</button>
+          </div>
+        </div>
       </div>
-      <div class="about-img reveal-right slide-ltr" id="aboutImg">
-        <img src="image/view.svg" alt="Car">
+      <div class="tour-card reveal delay-1">
+        <div class="tour-visual">
+          <div class="tour-duration" data-t="tours.mangrove.dur">Tempoh: 2-3 Jam</div>
+          <img class="tour-icon" src="image/tour-mangrove.jpg" alt="Mangrove Tour">
+        </div>
+        <div class="tour-body">
+          <h3 class="tour-name" data-t="tours.mangrove.name">Mangrove Tour</h3>
+          <p class="tour-desc" data-t="tours.mangrove.desc">Jelajah geoforest dengan guide berpengalaman untuk pengalaman alam semula jadi yang lebih informatif.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.slot">Slot:</span><span data-t="tours.mangrove.slot">Setiap hari, 10:00 AM & 2:30 PM</span></div>
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.meet">Meeting:</span><span data-t="tours.mangrove.meet">Jeti Kilim / tambahan pickup disediakan</span></div>
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.suitable">Sesuai:</span><span data-t="tours.mangrove.suitable">Peminat alam semula jadi, keluarga dengan anak</span></div>
+          </div>
+          <ul class="tour-includes">
+            <li data-t="tours.mangrove.inc1">Susuri Sungai Kilim Geoforest</li>
+            <li data-t="tours.mangrove.inc2">Pertunjukan helang makan</li>
+            <li data-t="tours.mangrove.inc3">Jelajah Gua Kelawar</li>
+            <li data-t="tours.mangrove.inc4">Bot, permit asas & life jacket termasuk</li>
+          </ul>
+          <div class="tour-footer">
+            <div class="tour-price" data-t="tours.mangrove.price">Bermula <strong>RM90</strong>/pax</div>
+            <button type="button" class="btn-primary" style="padding: 10px 22px; font-size: 11px;" data-book="tour" data-tour="Mangrove Tour" data-tour-price="90" data-t="tours.book">Tempah</button>
+          </div>
+        </div>
       </div>
-
+      <div class="tour-card reveal delay-2">
+        <div class="tour-visual">
+          <div class="tour-duration" data-t="tours.cablecar.dur">Seharian</div>
+          <img class="tour-icon" src="image/tour-cablecar.jpg" alt="Cable Car">
+        </div>
+        <div class="tour-body">
+          <h3 class="tour-name" data-t="tours.cablecar.name">Kereta Kabel</h3>
+          <p class="tour-desc" data-t="tours.cablecar.desc">Pakej sesuai untuk trip santai seharian dengan pemandangan panorama dan aktiviti indoor/outdoor.</p>
+          <div class="tour-meta">
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.slot">Slot:</span><span data-t="tours.cablecar.slot">Tiket fleksibel (ikut slot SkyCab yang tersedia)</span></div>
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.meet">Meeting:</span><span data-t="tours.cablecar.meet">Oriental Village, Pantai Kok</span></div>
+            <div class="tour-meta-row"><span class="tour-meta-label" data-t="tours.meta.suitable">Sesuai:</span><span data-t="tours.cablecar.suitable">Pasangan, keluarga, dan group pelancong</span></div>
+          </div>
+          <ul class="tour-includes">
+            <li data-t="tours.cablecar.inc1">Tiket rasmi SkyCab</li>
+            <li data-t="tours.cablecar.inc2">Akses percuma ke SkyDome</li>
+            <li data-t="tours.cablecar.inc3">Akses percuma 3D Art Museum</li>
+            <li data-t="tours.cablecar.inc4">Pilihan upgrade Express Lane (add-on)</li>
+          </ul>
+          <div class="tour-footer">
+            <div class="tour-price" data-t="tours.cablecar.price">Bermula <strong>RM85</strong>/pax</div>
+            <button type="button" class="btn-primary" style="padding: 10px 22px; font-size: 11px;" data-book="tour" data-tour="Cable Car" data-tour-price="85" data-t="tours.book">Tempah</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1527,8 +1786,9 @@
       <div class="footer-col">
         <h4 data-t="footer.menu">Menu</h4>
         <ul>
-          <li><a href="#about" data-t="nav.about">About Us</a></li>
+          <li><a href="#intro" data-t="nav.home">Home</a></li>
           <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
+          <li><a href="#tours" data-t="nav.tours">Tour Packages</a></li>
           <li><a href="#pickup" data-t="nav.pickup">Pickup Service</a></li>
           <li><a href="#contact" data-t="nav.contact">Contact</a></li>
         </ul>
@@ -1584,9 +1844,9 @@
         <div class="form-field">
           <select name="car" id="modalCar" onchange="this.classList.add('has-value')">
             <option value="" disabled selected data-t="form.car">Pilih jenis kereta*</option>
-            <option value="Sedan">Sedan — RM120/day</option>
-            <option value="MPV">MPV — RM180/day</option>
-            <option value="Van">Van — RM280/day</option>
+            <option value="Sedan" data-t="modal.car.sedan">Sedan — RM120/hari</option>
+            <option value="MPV" data-t="modal.car.mpv">MPV — RM180/hari</option>
+            <option value="Van" data-t="modal.car.van">Van — RM280/hari</option>
           </select>
         </div>
         <div class="form-row">
@@ -1631,6 +1891,33 @@
         </div>
       </div>
 
+      <!-- Tour fields -->
+      <div id="tourFields" style="display:none;">
+        <div class="form-field">
+          <select name="tourPackage" id="modalTourPackage" onchange="this.classList.add('has-value')">
+            <option value="" disabled selected data-t="modal.tour.package">Pilih pakej tour*</option>
+            <option value="Island Hopping" data-price="45" data-t="modal.tour.island">Island Hopping — RM45/pax</option>
+            <option value="Mangrove Tour" data-price="90" data-t="modal.tour.mangrove">Mangrove Tour — RM90/pax</option>
+            <option value="Cable Car" data-price="85" data-t="modal.tour.cable">Cable Car — RM85/pax</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label style="display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700;" data-t="modal.tour.datetime">Tarikh & masa tour*</label>
+            <input type="datetime-local" name="tourAt" id="tourAt">
+          </div>
+          <div class="form-field">
+            <label style="display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700;" data-t="modal.pax">Bilangan penumpang*</label>
+            <input type="number" name="tourPax" id="tourPax" min="1" max="40" value="1">
+          </div>
+        </div>
+        <div style="background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:2px;">
+          <div style="font-size:12px;color:var(--muted);font-weight:700;letter-spacing:0.8px;text-transform:uppercase;" data-t="modal.tour.priceSummary">Ringkasan Harga</div>
+          <div id="tourPriceBreakdown" style="font-size:13px;color:var(--ink);margin-top:6px;">RM0 x 0 pax</div>
+          <div id="tourTotalPrice" style="font-family:'Barlow Condensed',sans-serif;font-size:30px;line-height:1;color:var(--blue);margin-top:2px;">RM0</div>
+        </div>
+      </div>
+
       <!-- Contact -->
       <div class="modal-section-title" data-t="modal.contact">Maklumat Anda</div>
       <div class="form-field">
@@ -1658,8 +1945,9 @@
   // ============ I18N ============
   const I18N = {
     my: {
-      'nav.about': 'About Us',
+      'nav.home': 'Laman Utama',
       'nav.fleet': 'Fleet Kami',
+      'nav.tours': 'Pakej Pelancongan',
       'nav.pickup': 'Servis Pickup',
       'nav.contact': 'Hubungi',
 
@@ -1670,6 +1958,10 @@
       'hero.book': 'Tempah Sekarang',
       'hero.fleet': 'Lihat Fleet',
 
+      'intro.label': 'Selamat Datang',
+      'intro.title': 'Sewa Kereta & Pakej Percutian',
+      'intro.desc': 'Lebih dari sekadar sewa kereta! Kami menyediakan perkhidmatan kereta sewa yang selesa serta pelbagai pakej pelancongan menarik untuk melengkapkan percutian anda di Langkawi. Jelajah dengan tenang bersama HJH Global.',
+
       'fleet.label': 'Pilihan Kereta Kami',
       'fleet.title': 'Fleet Kami',
       'fleet.sedan.desc': 'Selesa dan jimat minyak — sesuai untuk pasangan atau perjalanan pendek.',
@@ -1679,6 +1971,46 @@
       'fleet.mpv.price': 'Bermula <strong>RM180</strong>/hari',
       'fleet.van.price': 'Bermula <strong>RM280</strong>/hari',
       'fleet.book': 'Tempah',
+
+      'tours.label': 'Pilihan Aktiviti',
+      'tours.title': 'Pakej Pelancongan',
+      'tours.meta.slot': 'Slot:',
+      'tours.meta.meet': 'Jumpa:',
+      'tours.meta.suitable': 'Sesuai:',
+      'tours.island.name': 'Island Hopping',
+      'tours.island.dur': 'Tempoh: 4 Jam',
+      'tours.island.desc': 'Pakej santai untuk yang pertama kali ke Langkawi, fokus pada pulau popular dan masa bergambar.',
+      'tours.island.slot': 'Pagi 9:00 AM atau petang 2:00 PM',
+      'tours.island.meet': 'Jeti Teluk Baru (10 minit awal)',
+      'tours.island.suitable': 'Keluarga, pasangan, dan kumpulan kecil',
+      'tours.island.inc1': 'Lawatan ke 3 buah pulau',
+      'tours.island.inc2': 'Tasik Dayang Bunting & Beras Basah',
+      'tours.island.inc3': 'Termasuk jaket keselamatan',
+      'tours.island.inc4': 'Nota: makan/minum tidak termasuk',
+      'tours.island.price': 'Bermula <strong>RM45</strong>/pax',
+      'tours.mangrove.name': 'Mangrove Tour',
+      'tours.mangrove.dur': 'Tempoh: 2-3 Jam',
+      'tours.mangrove.desc': 'Jelajah geoforest dengan guide berpengalaman untuk pengalaman alam semula jadi yang lebih informatif.',
+      'tours.mangrove.slot': 'Setiap hari, 10:00 AM & 2:30 PM',
+      'tours.mangrove.meet': 'Jeti Kilim / tambahan pickup disediakan',
+      'tours.mangrove.suitable': 'Peminat alam semula jadi, keluarga dengan anak',
+      'tours.mangrove.inc1': 'Susuri Sungai Kilim Geoforest',
+      'tours.mangrove.inc2': 'Pertunjukan helang makan',
+      'tours.mangrove.inc3': 'Jelajah Gua Kelawar',
+      'tours.mangrove.inc4': 'Bot, permit asas & life jacket termasuk',
+      'tours.mangrove.price': 'Bermula <strong>RM90</strong>/pax',
+      'tours.cablecar.name': 'Kereta Kabel (Cable Car)',
+      'tours.cablecar.dur': 'Seharian',
+      'tours.cablecar.desc': 'Pakej sesuai untuk trip santai seharian dengan pemandangan panorama dan aktiviti indoor/outdoor.',
+      'tours.cablecar.slot': 'Tiket fleksibel (ikut slot SkyCab yang tersedia)',
+      'tours.cablecar.meet': 'Oriental Village, Pantai Kok',
+      'tours.cablecar.suitable': 'Pasangan, keluarga, dan group pelancong',
+      'tours.cablecar.inc1': 'Tiket rasmi SkyCab',
+      'tours.cablecar.inc2': 'Akses percuma ke SkyDome',
+      'tours.cablecar.inc3': 'Akses percuma 3D Art Museum',
+      'tours.cablecar.inc4': 'Pilihan upgrade Express Lane (add-on)',
+      'tours.cablecar.price': 'Bermula <strong>RM85</strong>/pax',
+      'tours.book': 'Tempah',
 
       'about.label': 'Kenali HJH Global',
       'about.title': 'Tentang Kami',
@@ -1736,22 +2068,37 @@
 
       'float.book': 'Tempah',
 
-      'modal.label': 'Quick Booking',
-      'modal.title.rental': 'Book a Rental Car',
-      'modal.sub.rental': 'Fill in the details below. We will send a confirmation via WhatsApp.',
-      'modal.title.pickup': 'Book Pickup Service',
-      'modal.sub.pickup': 'Fill in the details below. We will send a confirmation via WhatsApp.',
-      'modal.service': 'Service Details',
-      'modal.contact': 'Your Information',
-      'modal.pickDate': 'Pickup date & time*',
-      'modal.returnDate': 'Return date & time*',
-      'modal.pax': 'Number of passengers*',
-      'modal.note': 'Additional notes (optional)',
-      'modal.submit': 'Send Booking'
+      'modal.label': 'Tempahan Pantas',
+      'modal.title.rental': 'Tempah Kereta Sewa',
+      'modal.sub.rental': 'Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.',
+      'modal.title.pickup': 'Tempah Servis Pickup',
+      'modal.sub.pickup': 'Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.',
+      'modal.title.tour': 'Tempah Pakej Tour',
+      'modal.sub.tour': 'Pilih pakej, tarikh & masa, dan bilangan pax. Jumlah harga dikira automatik.',
+      'modal.service': 'Butiran Perkhidmatan',
+      'modal.contact': 'Maklumat Anda',
+      'modal.pickDate': 'Tarikh & masa pickup*',
+      'modal.returnDate': 'Tarikh & masa return*',
+      'modal.pax': 'Bilangan penumpang*',
+      'modal.tour.package': 'Pilih pakej tour*',
+      'modal.tour.datetime': 'Tarikh & masa tour*',
+      'modal.tour.priceSummary': 'Ringkasan Harga',
+      'modal.tour.perPaxLabel': 'Harga/pax:',
+      'modal.tour.totalLabel': 'Jumlah:',
+      'modal.tour.paxUnit': 'pax',
+      'modal.tour.island': 'Island Hopping — RM45/pax',
+      'modal.tour.mangrove': 'Mangrove Tour — RM90/pax',
+      'modal.tour.cable': 'Cable Car — RM85/pax',
+      'modal.note': 'Catatan tambahan (pilihan)',
+      'modal.submit': 'Hantar Tempahan',
+      'modal.car.sedan': 'Sedan — RM120/hari',
+      'modal.car.mpv': 'MPV — RM180/hari',
+      'modal.car.van': 'Van — RM280/hari'
     },
     en: {
-      'nav.about': 'About Us',
+      'nav.home': 'Home',
       'nav.fleet': 'Our Fleet',
+      'nav.tours': 'Tour Packages',
       'nav.pickup': 'Pickup Service',
       'nav.contact': 'Contact',
 
@@ -1761,6 +2108,10 @@
       'hero.sub': 'Enjoy a worry-free holiday with quality cars and pickup service at the airport, hotel, and jetty across Langkawi.',
       'hero.book': 'Book Now',
       'hero.fleet': 'View Fleet',
+
+      'intro.label': 'Welcome',
+      'intro.title': 'Car Rental & Tour Packages',
+      'intro.desc': 'More than just car rentals! We provide comfortable car rental services along with exciting tour packages to complete your Langkawi holiday. Explore with peace of mind with HJH Global.',
 
       'fleet.label': 'Our Car Selection',
       'fleet.title': 'Our Fleet',
@@ -1772,6 +2123,46 @@
       'fleet.van.price': 'From <strong>RM280</strong>/day',
       'fleet.book': 'Book',
 
+      'tours.label': 'Activity Options',
+      'tours.title': 'Tour Packages',
+      'tours.meta.slot': 'Slot:',
+      'tours.meta.meet': 'Meeting:',
+      'tours.meta.suitable': 'Best for:',
+      'tours.island.name': 'Island Hopping',
+      'tours.island.dur': 'Duration: 4 Hours',
+      'tours.island.desc': 'A relaxed package for first-time visitors, focused on popular islands and photo stops.',
+      'tours.island.slot': 'Morning 9:00 AM or afternoon 2:00 PM',
+      'tours.island.meet': 'Teluk Baru Jetty (arrive 10 minutes earlier)',
+      'tours.island.suitable': 'Families, couples, and small groups',
+      'tours.island.inc1': '3 islands tour',
+      'tours.island.inc2': 'Pregnant Maiden Lake',
+      'tours.island.inc3': 'Life jacket included',
+      'tours.island.inc4': 'Note: food & drinks are not included',
+      'tours.island.price': 'From <strong>RM45</strong>/pax',
+      'tours.mangrove.name': 'Mangrove Tour',
+      'tours.mangrove.dur': 'Duration: 2-3 Hours',
+      'tours.mangrove.desc': 'Explore the geoforest with an experienced guide for a more informative nature trip.',
+      'tours.mangrove.slot': 'Daily, 10:00 AM & 2:30 PM',
+      'tours.mangrove.meet': 'Kilim Jetty / pickup add-on available',
+      'tours.mangrove.suitable': 'Nature lovers and families with kids',
+      'tours.mangrove.inc1': 'Kilim River cruise',
+      'tours.mangrove.inc2': 'Eagle feeding show',
+      'tours.mangrove.inc3': 'Bat Cave exploration',
+      'tours.mangrove.inc4': 'Boat, basic permit & life jacket included',
+      'tours.mangrove.price': 'From <strong>RM90</strong>/pax',
+      'tours.cablecar.name': 'Cable Car',
+      'tours.cablecar.dur': 'Full Day',
+      'tours.cablecar.desc': 'A great full-day option with panoramic views and a mix of indoor and outdoor attractions.',
+      'tours.cablecar.slot': 'Flexible ticket (based on SkyCab available slots)',
+      'tours.cablecar.meet': 'Oriental Village, Pantai Kok',
+      'tours.cablecar.suitable': 'Couples, families, and travel groups',
+      'tours.cablecar.inc1': 'Official SkyCab ticket',
+      'tours.cablecar.inc2': 'Free SkyDome access',
+      'tours.cablecar.inc3': 'Free 3D Art Museum access',
+      'tours.cablecar.inc4': 'Express Lane upgrade option (add-on)',
+      'tours.cablecar.price': 'From <strong>RM85</strong>/pax',
+      'tours.book': 'Book',
+
       'about.label': 'Meet HJH Global',
       'about.title': 'About Us',
       'about.lead': 'Your trusted car rental partner for your Langkawi holiday.',
@@ -1779,12 +2170,12 @@
       'about.p2': 'We value your time, so we provide free pickup service at the airport, hotel, and jeti. Just arrive — we handle the rest.',
       'about.cta': 'Contact Us',
 
-      'pickup.label': 'Servis Pickup <b>Berbayar</b>',
-      'pickup.title': 'Kami Jemput Anda',
+      'pickup.label': 'Paid Pickup Service',
+      'pickup.title': 'We Pick You Up',
       'pickup.airport.name': 'Airport',
-      'pickup.airport.desc': 'Jemputan di Lapangan Terbang Antarabangsa Langkawi (LGK). Kereta anda akan menunggu sebaik anda sampai.',
+      'pickup.airport.desc': 'Pickup at Langkawi International Airport (LGK). Your car will be ready as soon as you arrive.',
       'pickup.hotel.name': 'Hotel & Resort',
-      'pickup.hotel.desc': 'Hantar dan jemput di hotel pilihan anda — Pantai Cenang, Kuah, Datai, or any resort on the island.',
+      'pickup.hotel.desc': 'Drop-off and pickup at your chosen hotel — Pantai Cenang, Kuah, Datai, or any resort on the island.',
       'pickup.jetty.name': 'Kuah Jetty',
       'pickup.jetty.desc': 'Just arrived by ferry from Kuala Perlis or Penang? We pick you up at Kuah Jetty.',
       'pickup.book': 'Book Pickup',
@@ -1833,13 +2224,27 @@
       'modal.sub.rental': 'Fill in the details below. We will send a confirmation via WhatsApp.',
       'modal.title.pickup': 'Book Pickup Service',
       'modal.sub.pickup': 'Fill in the details below. We will send a confirmation via WhatsApp.',
+      'modal.title.tour': 'Book Tour Package',
+      'modal.sub.tour': 'Select package, date & time, and number of pax. Total price updates automatically.',
       'modal.service': 'Service Details',
       'modal.contact': 'Your Information',
       'modal.pickDate': 'Pickup date & time*',
       'modal.returnDate': 'Return date & time*',
       'modal.pax': 'Number of passengers*',
+      'modal.tour.package': 'Select tour package*',
+      'modal.tour.datetime': 'Tour date & time*',
+      'modal.tour.priceSummary': 'Price Summary',
+      'modal.tour.perPaxLabel': 'Price/pax:',
+      'modal.tour.totalLabel': 'Total:',
+      'modal.tour.paxUnit': 'pax',
+      'modal.tour.island': 'Island Hopping — RM45/pax',
+      'modal.tour.mangrove': 'Mangrove Tour — RM90/pax',
+      'modal.tour.cable': 'Cable Car — RM85/pax',
       'modal.note': 'Additional notes (optional)',
-      'modal.submit': 'Send Booking'
+      'modal.submit': 'Send Booking',
+      'modal.car.sedan': 'Sedan — RM120/day',
+      'modal.car.mpv': 'MPV — RM180/day',
+      'modal.car.van': 'Van — RM280/day'
     }
   };
 
@@ -1871,7 +2276,12 @@
     document.getElementById('lang-en').classList.toggle('active', lang === 'en');
 
     // refresh the modal title in case it's open
-    updateModalMode(currentMode, { car: lastBookingContext.car, location: lastBookingContext.location });
+    updateModalMode(currentMode, {
+      car: lastBookingContext.car,
+      location: lastBookingContext.location,
+      tour: lastBookingContext.tour,
+      tourPrice: lastBookingContext.tourPrice
+    });
   }
 
   document.getElementById('lang-my').addEventListener('click', () => applyLang('my'));
@@ -1942,12 +2352,32 @@
   const modalSub = document.getElementById('modalSub');
   const rentalFields = document.getElementById('rentalFields');
   const pickupFields = document.getElementById('pickupFields');
+  const tourFields = document.getElementById('tourFields');
   const modalCarSelect = document.getElementById('modalCar');
   const rentalLocation = document.getElementById('rentalLocation');
   const modalPickupLocation = document.getElementById('modalPickupLocation');
+  const modalTourPackage = document.getElementById('modalTourPackage');
+  const modalTourPax = document.getElementById('tourPax');
+  const modalTourAt = document.getElementById('tourAt');
+  const tourPriceBreakdown = document.getElementById('tourPriceBreakdown');
+  const tourTotalPrice = document.getElementById('tourTotalPrice');
 
-  let currentMode = 'rental'; // 'rental' | 'pickup'
-  let lastBookingContext = { car: null, location: null };
+  let currentMode = 'rental'; // 'rental' | 'pickup' | 'tour'
+  let lastBookingContext = { car: null, location: null, tour: null, tourPrice: null };
+
+  function updateTourTotal() {
+    const dict = I18N[currentLang];
+    const selectedOption = modalTourPackage.options[modalTourPackage.selectedIndex];
+    const perPax = selectedOption ? Number(selectedOption.dataset.price || 0) : 0;
+    const pax = Math.max(1, Number(modalTourPax.value || 1));
+    const total = perPax * pax;
+
+    tourPriceBreakdown.textContent = `${dict['modal.tour.perPaxLabel']} RM${perPax} x ${pax} ${dict['modal.tour.paxUnit']}`;
+    tourTotalPrice.textContent = `${dict['modal.tour.totalLabel']} RM${total}`;
+    tourTotalPrice.classList.remove('price-pop');
+    void tourTotalPrice.offsetWidth;
+    tourTotalPrice.classList.add('price-pop');
+  }
 
   function updateModalMode(mode, context = {}) {
     currentMode = mode;
@@ -1955,6 +2385,7 @@
     if (mode === 'rental') {
       rentalFields.style.display = '';
       pickupFields.style.display = 'none';
+      tourFields.style.display = 'none';
       modalTitle.textContent = dict['modal.title.rental'];
       modalSub.textContent = dict['modal.sub.rental'];
       // mark which fields are required
@@ -1965,18 +2396,39 @@
       document.getElementById('pickupPickupAt').required = false;
       document.getElementById('modalPax').required = false;
       modalPickupLocation.required = false;
+      modalTourPackage.required = false;
+      modalTourAt.required = false;
+      modalTourPax.required = false;
     } else {
-      rentalFields.style.display = 'none';
-      pickupFields.style.display = '';
-      modalTitle.textContent = dict['modal.title.pickup'];
-      modalSub.textContent = dict['modal.sub.pickup'];
+      if (mode === 'pickup') {
+        rentalFields.style.display = 'none';
+        pickupFields.style.display = '';
+        tourFields.style.display = 'none';
+        modalTitle.textContent = dict['modal.title.pickup'];
+        modalSub.textContent = dict['modal.sub.pickup'];
+        document.getElementById('pickupPickupAt').required = true;
+        document.getElementById('modalPax').required = true;
+        modalPickupLocation.required = true;
+        modalTourPackage.required = false;
+        modalTourAt.required = false;
+        modalTourPax.required = false;
+      } else {
+        rentalFields.style.display = 'none';
+        pickupFields.style.display = 'none';
+        tourFields.style.display = '';
+        modalTitle.textContent = dict['modal.title.tour'];
+        modalSub.textContent = dict['modal.sub.tour'];
+        document.getElementById('pickupPickupAt').required = false;
+        document.getElementById('modalPax').required = false;
+        modalPickupLocation.required = false;
+        modalTourPackage.required = true;
+        modalTourAt.required = true;
+        modalTourPax.required = true;
+      }
       document.getElementById('rentalPickupAt').required = false;
       document.getElementById('rentalReturnAt').required = false;
       rentalLocation.required = false;
       modalCarSelect.required = false;
-      document.getElementById('pickupPickupAt').required = true;
-      document.getElementById('modalPax').required = true;
-      modalPickupLocation.required = true;
     }
 
     // prefill
@@ -1993,10 +2445,19 @@
         modalPickupLocation.classList.add('has-value');
       }
     }
+    if (context.tour && mode === 'tour') {
+      modalTourPackage.value = context.tour;
+      modalTourPackage.classList.add('has-value');
+    }
+    if (context.tourPrice && mode === 'tour') {
+      const targetOption = Array.from(modalTourPackage.options).find(opt => opt.value === context.tour);
+      if (targetOption) targetOption.dataset.price = context.tourPrice;
+    }
+    updateTourTotal();
   }
 
   function openModal(mode, context = {}) {
-    lastBookingContext = { car: context.car || null, location: context.location || null };
+    lastBookingContext = { car: context.car || null, location: context.location || null, tour: context.tour || null, tourPrice: context.tourPrice || null };
     updateModalMode(mode, context);
 
     // sensible default datetime = now + 1h, rounded
@@ -2009,6 +2470,9 @@
     if (!document.getElementById('rentalPickupAt').value) document.getElementById('rentalPickupAt').value = dflt;
     if (!document.getElementById('rentalReturnAt').value) document.getElementById('rentalReturnAt').value = dfltRet;
     if (!document.getElementById('pickupPickupAt').value) document.getElementById('pickupPickupAt').value = dflt;
+    if (!document.getElementById('tourAt').value) document.getElementById('tourAt').value = dflt;
+    if (!document.getElementById('tourPax').value) document.getElementById('tourPax').value = 1;
+    updateTourTotal();
 
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
@@ -2032,9 +2496,13 @@
       const mode = btn.getAttribute('data-book') || 'rental';
       const car = btn.getAttribute('data-car') || null;
       const location = btn.getAttribute('data-location') || null;
-      openModal(mode, { car, location });
+      const tour = btn.getAttribute('data-tour') || null;
+      const tourPrice = btn.getAttribute('data-tour-price') || null;
+      openModal(mode, { car, location, tour, tourPrice });
     });
   });
+  modalTourPackage.addEventListener('change', updateTourTotal);
+  modalTourPax.addEventListener('input', updateTourTotal);
 
   document.querySelector('.modal-close').addEventListener('click', closeModal);
   overlay.addEventListener('click', (e) => {
@@ -2062,7 +2530,7 @@
       lines.push(`📍 ${dict['form.location'].replace('*','')}: ${loc}`);
       lines.push(`📅 Pickup: ${formatDT(pickup)}`);
       lines.push(`📅 Return: ${formatDT(ret)}`);
-    } else {
+    } else if (currentMode === 'pickup') {
       const loc = fd.get('pickupLocation');
       const pickup = fd.get('pickupAt');
       const pax = fd.get('pax');
@@ -2071,6 +2539,20 @@
       lines.push(`📍 ${dict['form.location'].replace('*','')}: ${loc}`);
       lines.push(`📅 Pickup: ${formatDT(pickup)}`);
       lines.push(`👥 ${dict['modal.pax'].replace('*','')}: ${pax}`);
+    } else {
+      const tourPackage = fd.get('tourPackage');
+      const tourAt = fd.get('tourAt');
+      const pax = Math.max(1, Number(fd.get('tourPax') || 0));
+      const selectedOption = modalTourPackage.options[modalTourPackage.selectedIndex];
+      const perPax = selectedOption ? Number(selectedOption.dataset.price || 0) : 0;
+      const total = perPax * pax;
+      if (!tourPackage || !tourAt || !pax) { alert(dict['modal.tour.package']); return; }
+      lines.push(`*${dict['modal.title.tour']}*`);
+      lines.push(`🧭 ${dict['modal.tour.package'].replace('*','')}: ${tourPackage}`);
+      lines.push(`📅 ${dict['modal.tour.datetime'].replace('*','')}: ${formatDT(tourAt)}`);
+      lines.push(`👥 ${dict['modal.pax'].replace('*','')}: ${pax}`);
+      lines.push(`💵 ${dict['modal.tour.perPaxLabel']} RM${perPax}`);
+      lines.push(`💰 ${dict['modal.tour.totalLabel']} RM${total}`);
     }
 
     lines.push('');
@@ -2085,6 +2567,8 @@
     closeModal();
     this.reset();
     document.querySelectorAll('#quickBookingForm select').forEach(s => s.classList.remove('has-value'));
+    document.getElementById('tourPax').value = 1;
+    updateTourTotal();
   });
 
   function formatDT(v) {
@@ -2154,6 +2638,23 @@
       });
     }, { threshold: 0.15 });
     document.querySelectorAll('.cat-card').forEach(card => cardObserver.observe(card));
+  }
+
+  // ============ PREMIUM MOBILE TOUR + PICKUP ANIMATIONS ============
+  if (window.innerWidth <= 900) {
+    const premiumCardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('mobile-in');
+          premiumCardObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll('.tour-card, .pickup-card').forEach((card, idx) => {
+      card.style.transitionDelay = `${Math.min(idx, 3) * 0.1}s`;
+      premiumCardObserver.observe(card);
+    });
   }
 
 
