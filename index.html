@@ -169,6 +169,22 @@
 
   .menu-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; }
 
+
+  /* Hero car: fade in on load without transform conflict */
+  .hero-img-anim {
+    animation: heroFadeIn 0.8s ease 0.2s both;
+  }
+  @keyframes heroFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  /* On mobile, the img uses absolute positioning — no transform from reveal allowed */
+  @media (max-width: 900px) {
+    .hero-img-anim {
+      animation: heroFadeIn 0.7s ease 0.15s both;
+    }
+  }
+
   /* ============ HERO ============ */
   .hero {
     position: relative;
@@ -269,6 +285,36 @@
   }
   .btn-primary:hover::before { left: 100%; }
   .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(45,127,249,0.35); }
+
+  .btn-yellow {
+    background: var(--yellow);
+    color: var(--ink);
+    border: none;
+    padding: 18px 42px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    font-family: inherit;
+  }
+  .btn-yellow::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transition: left 0.6s;
+  }
+  .btn-yellow:hover::before { left: 100%; }
+  .btn-yellow:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,184,46,0.4); }
+
   .btn-ghost {
     color: var(--yellow-dark);
     font-weight: 700;
@@ -993,7 +1039,7 @@
       justify-content: center;
       background: transparent;
       border-radius: 0;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       position: relative;
       width: 100%;
     }
@@ -1031,6 +1077,11 @@
     /* Kill desktop negative margin-top on cat-img inside mobile */
     #fleet .cat-img { margin-top: 0 !important; }
     #fleet .cat-grid { padding-top: 0; }
+    /* Tighter text spacing under fleet image */
+    .cat-name { font-size: 26px; margin-bottom: 6px; }
+    .cat-desc { margin-bottom: 12px; min-height: 0; font-size: 14px; }
+    .cat-price { margin-bottom: 16px; }
+
     .contact-form { padding: 60px 24px; }
     .contact-visual { min-height: 260px; order: -1; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -1048,10 +1099,41 @@
     .nav-inner { padding-right: 110px; }
     .hero-title { font-size: clamp(46px, 14vw, 70px); }
     .hero-sub { font-size: 12px; margin: 10px 0; }
-    .btn-ghost { font-size: 11px; }
+  
+  .btn-yellow {
+    background: var(--yellow);
+    color: var(--ink);
+    border: none;
+    padding: 18px 42px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    font-family: inherit;
+  }
+  .btn-yellow::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transition: left 0.6s;
+  }
+  .btn-yellow:hover::before { left: 100%; }
+  .btn-yellow:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,184,46,0.4); }
+
+  .btn-ghost { font-size: 11px; }
     .footer-grid { grid-template-columns: 1fr; }
     .hero-cta { gap: 14px; }
     .btn-primary { padding: 12px 18px; font-size: 11px; letter-spacing: 0.8px; }
+    .btn-yellow { padding: 12px 18px; font-size: 11px; letter-spacing: 0.8px; }
     .hero-img img { width: 220%; }
   }
 
@@ -1113,6 +1195,39 @@
     .cat-card.reveal.in.card-in { opacity: 1; transform: translateY(0); }
     .cat-card.card-in:not(.in) { opacity: 1; transform: translateY(0); }
   }
+
+  @media (max-width: 900px) {
+    /* About image: slide from left on scroll down, right on scroll up */
+    .about-img {
+      margin-top: 10px;
+    }
+    .about-img img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      min-height: 0;
+      object-fit: contain;
+    }
+    /* Slide-in animation for about image — resets on scroll out */
+    .about-img.slide-ltr {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+    }
+    .about-img.slide-ltr.img-in {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    /* Tighten all section paddings on mobile */
+    .about.section { padding: 30px 0; }
+    .pickup { padding: 30px 0 !important; }
+    .resp.section { padding: 30px 0; }
+    #fleet.section { padding: 24px 0 30px; }
+    /* Remove about-lead large font on mobile */
+    .about-lead { font-size: 16px; margin-bottom: 12px; }
+    .about-text { font-size: 14px; margin-bottom: 12px; line-height: 1.6; }
+    .about-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 14px; }
+  }
 </style>
 </head>
 <body>
@@ -1125,7 +1240,7 @@
 
 <nav>
   <div class="nav-inner">
-    <div class="logo">HJH<span class="accent">GLOBAL</span></div>
+    <a href="#" class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">HJH<span class="accent">GLOBAL</span></a>
     <ul class="nav-links">
       <li><a href="#about" data-t="nav.about">About Us</a></li>
       <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
@@ -1154,10 +1269,10 @@
         <p class="hero-sub reveal delay-2" data-t="hero.sub">Nikmati percutian tanpa kerunsingan dengan kereta berkualiti dan servis pickup di lapangan terbang, hotel, dan jeti di seluruh Langkawi.</p>
         <div class="hero-cta reveal delay-3">
           <button type="button" class="btn-primary" data-book="rental" data-t="hero.book">Tempah Sekarang</button>
-          <a href="#fleet" class="btn-ghost" data-t="hero.fleet">Lihat Fleet</a>
+          <a href="#fleet" class="btn-yellow" data-t="hero.fleet">Lihat Fleet</a>
         </div>
       </div>
-      <div class="hero-img reveal-right">
+      <div class="hero-img hero-img-anim">
         <img src="image/honda.png" alt="Rental car">
       </div>
     </div>
@@ -1215,7 +1330,7 @@
         <p class="about-text" data-t="about.p2">Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup percuma di lapangan terbang, hotel dan jeti. Anda hanya perlu sampai — kami uruskan yang lain.</p>
         <a href="#contact" class="btn-primary" style="margin-top: 20px;" data-t="about.cta">Hubungi Kami</a>
       </div>
-      <div class="about-img reveal-right">
+      <div class="about-img reveal-right slide-ltr" id="aboutImg">
         <img src="image/view.svg" alt="Car">
       </div>
 
@@ -1970,6 +2085,24 @@
       });
     }, { threshold: 0.15 });
     document.querySelectorAll('.cat-card').forEach(card => cardObserver.observe(card));
+  }
+
+
+  // ============ ABOUT IMAGE SLIDE LEFT→RIGHT (BIDIRECTIONAL) ============
+  if (window.innerWidth <= 900) {
+    const aboutImg = document.getElementById('aboutImg');
+    if (aboutImg) {
+      const aboutObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            aboutImg.classList.add('img-in');
+          } else {
+            aboutImg.classList.remove('img-in'); // re-animates every time
+          }
+        });
+      }, { threshold: 0.2 });
+      aboutObserver.observe(aboutImg);
+    }
   }
 
 </script>
