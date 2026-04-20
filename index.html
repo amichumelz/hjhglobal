@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HJH Global — Sewa Kereta Langkawi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #F5B82E;
+    --yellow-dark: #E5A620;
+    --blue: #2D7FF9;
+    --blue-dark: #1E6BE0;
+    --ink: #1A1A1A;
+    --muted: #8A8A8A;
+    --line: #EDEDED;
+    --bg: #FFFFFF;
+    --soft: #F7F7F7;
+    --wa: #25D366;
+    --wa-dark: #1DA851;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* ============ SCROLL REVEAL (works on mobile & desktop) ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s cubic-bezier(.22,.61,.36,1), transform 0.9s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left { transform: translateX(-40px); }
+  .reveal-left.in { transform: translateX(0); }
+  .reveal-right { transform: translateX(40px); }
+  .reveal-right.in { transform: translateX(0); }
+  .reveal-scale { transform: scale(0.92); }
+  .reveal-scale.in { transform: scale(1); }
+  .delay-1 { transition-delay: 0.12s; }
+  .delay-2 { transition-delay: 0.24s; }
+  .delay-3 { transition-delay: 0.36s; }
+  .delay-4 { transition-delay: 0.48s; }
+
+  /* Respect user motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-drive {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .float-anim, .pulse-ring, .bob { animation: none !important; }
+  }
+
+  /* ============ LANGUAGE TOGGLE (top floating pill) ============ */
+  .lang-toggle {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    z-index: 200;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 4px;
+    display: inline-flex;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .lang-toggle button {
+    border: none;
+    background: transparent;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 100px;
+    transition: all 0.25s ease;
+  }
+  .lang-toggle button.active {
+    background: var(--yellow);
+    color: var(--ink);
+    box-shadow: 0 3px 10px rgba(245,184,46,0.35);
+  }
+
+  /* ============ NAV ============ */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .logo .accent { color: var(--yellow); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0; height: 2px;
+    background: var(--yellow);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--yellow-dark); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-social { display: flex; gap: 10px; }
+  .nav-social a {
+    width: 34px; height: 34px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.25s;
+  }
+  .nav-social a:hover { transform: translateY(-3px) rotate(-8deg); }
+
+  .menu-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    padding: 80px 0 140px;
+    background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--yellow);
+    clip-path: polygon(0 100%, 100% 40%, 100% 100%);
+  }
+  /* decorative floating blob behind hero */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -100px;
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(245,184,46,0.25) 0%, rgba(245,184,46,0) 70%);
+    border-radius: 50%;
+    z-index: 1;
+    animation: blobPulse 8s ease-in-out infinite;
+  }
+  @keyframes blobPulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.12); opacity: 1; }
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+  .hero-label::before {
+    content: '';
+    width: 24px; height: 2px;
+    background: var(--blue);
+  }
+  .hero-label .pin { color: var(--blue); }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    color: var(--yellow);
+    font-size: clamp(80px, 14vw, 200px);
+    line-height: 0.88;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+  }
+  .hero-title span.block { display: block; }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 17px;
+    margin: 30px 0;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  .hero-cta { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 18px 42px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+  }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(45,127,249,0.35); }
+  .btn-ghost {
+    color: var(--yellow-dark);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.2s;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+  .btn-ghost:hover { gap: 14px; }
+  .btn-ghost::after { content: '▶'; font-size: 10px; }
+
+  .hero-img {
+    position: relative;
+    height: 560px;
+  }
+  .hero-img img {
+    position: absolute;
+    right: -80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 140%;
+    height: auto;
+    max-width: none;
+    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.18));
+    animation: bob 6s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(-50%) translateY(0px); }
+    50% { transform: translateY(-50%) translateY(-14px); }
+  }
+
+  /* ============ CATEGORIES ============ */
+  .section {
+    padding: 120px 0;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+  .section-label {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--yellow-dark);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-label::before { content: '— '; }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(40px, 5vw, 60px);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .cat-card {
+    background: white;
+    border: 1px solid var(--line);
+    padding: 50px 32px 40px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(.22,.61,.36,1);
+    border-radius: 8px;
+  }
+  .cat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+    border-color: transparent;
+  }
+  .cat-card:hover .cat-img img { transform: scale(1.08) rotate(-2deg); }
+  .cat-img {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-img::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 15%;
+    right: 15%;
+    height: 14px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .cat-img img {
+    width: auto;
+    height: 160px;
+    max-width: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.5s cubic-bezier(.22,.61,.36,1);
+    filter: drop-shadow(0 18px 28px rgba(0,0,0,0.16));
+    mix-blend-mode: multiply;
+  }
+  /* Sedan — slightly bigger */
+  .cat-card:first-child .cat-img img {
+    height: 190px;
+  }
+  /* MPV — center it */
+  .cat-card:nth-child(2) .cat-img {
+    justify-content: center;
+  }
+  .cat-card:nth-child(2) .cat-img img {
+    margin: 0 auto;
+    display: block;
+  }
+  .cat-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .cat-desc {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 24px;
+    min-height: 48px;
+  }
+  .cat-price {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  .cat-price strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--blue);
+  }
+  .cat-btn {
+    background: var(--yellow);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s;
+    font-family: inherit;
+  }
+  .cat-btn:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,184,46,0.4); }
+
+  /* ============ ABOUT ============ */
+  .about { background: var(--soft); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 6vw, 72px);
+    line-height: 0.95;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+  }
+  .about-lead {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 20px;
+    line-height: 1.35;
+  }
+  .about-text {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .about-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .about-img img {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.12));
+    animation: bob 7s ease-in-out infinite;
+  }
+
+  /* ============ PICKUP SERVICE ============ */
+  .pickup { background: white; padding: 100px 0; }
+  .pickup-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+  .pickup-card {
+    padding: 40px 30px;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    transition: all 0.35s cubic-bezier(.22,.61,.36,1);
+    position: relative;
+    background: white;
+  }
+  .pickup-card:hover {
+    border-color: var(--yellow);
+    transform: translateY(-6px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+  }
+  .pickup-card:hover .pickup-icon { transform: rotate(-8deg) scale(1.08); }
+  .pickup-icon {
+    width: 60px; height: 60px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: white;
+    font-size: 24px;
+    font-weight: 900;
+    transition: transform 0.35s ease;
+  }
+  .pickup-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+  .pickup-text { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+  .pickup-book-btn {
+    background: transparent;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s;
+  }
+  .pickup-book-btn:hover {
+    background: var(--blue);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* ============ RESPONSIBILITY/STATS ============ */
+  .resp { background: var(--soft); overflow: hidden; }
+  .resp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .resp-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 6vw, 72px);
+    line-height: 0.95;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+  }
+  .resp-text {
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .resp-text-muted { color: var(--muted); font-size: 15px; line-height: 1.7; margin-bottom: 28px; }
+  .resp-features { list-style: none; margin-bottom: 36px; }
+  .resp-features li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 0;
+    font-weight: 500;
+  }
+  .resp-features li::before {
+    content: '';
+    width: 22px; height: 22px;
+    background: var(--blue);
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E");
+    background-size: 60% 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .resp-center {
+    position: relative;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .resp-center img {
+    width: 90%;
+    max-width: 480px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.1));
+  }
+
+  /* Drive-in animation for up.svg — vertical, re-triggers on every scroll */
+  .reveal-drive {
+    opacity: 0;
+    transform: translateY(70px);
+    transition: opacity 0.85s cubic-bezier(.22,.61,.36,1), transform 0.95s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+  .reveal-drive.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stats { display: flex; flex-direction: column; gap: 30px; }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 0.9;
+    color: var(--blue);
+    letter-spacing: -2px;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 6px 0 8px;
+  }
+  .stat-desc { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+  /* ============ CONTACT FORM ============ */
+  .contact {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 700px;
+  }
+  .contact-form {
+    padding: 100px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contact-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(44px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -1px;
+    margin: 14px 0 20px;
+  }
+  .contact-sub {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  .form-field {
+    margin-bottom: 26px;
+    position: relative;
+  }
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--line);
+    padding: 14px 0;
+    font-family: inherit;
+    font-size: 15px;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+    color: var(--ink);
+  }
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: var(--blue);
+  }
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: #B5B5B5;
+    font-family: inherit;
+  }
+  .form-field select { color: #B5B5B5; cursor: pointer; }
+  .form-field select.has-value { color: var(--ink); }
+  .form-field textarea { resize: none; min-height: 60px; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .submit-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+  }
+  .submit-btn:hover::before { left: 100%; }
+  .submit-btn:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(45,127,249,0.3); }
+
+  .contact-visual {
+    background: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200&q=80') center/cover;
+    position: relative;
+  }
+  .contact-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0));
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--ink);
+    color: white;
+    padding: 70px 0 30px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 50px;
+  }
+  .footer-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .footer-logo .accent { color: var(--yellow); }
+  .footer-about { color: #B5B5B5; font-size: 14px; line-height: 1.7; max-width: 340px; }
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; color: #B5B5B5; font-size: 14px; }
+  .footer-col a { color: #B5B5B5; text-decoration: none; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--yellow); }
+  .footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 24px;
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+  }
+
+  /* ============ FLOATING BUTTONS (WA + BOOK NOW) ============ */
+  .floating-actions {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-end;
+  }
+  .float-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    transition: all 0.3s ease;
+  }
+  .float-btn svg { width: 24px; height: 24px; flex-shrink: 0; }
+  .float-btn .float-label { display: none; }
+  .float-btn-wa { background: var(--wa); position: relative; }
+  .float-btn-wa:hover { background: var(--wa-dark); transform: translateY(-3px) scale(1.08); }
+  .float-btn-wa::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid var(--wa);
+    opacity: 0.6;
+    animation: pulseRing 2s cubic-bezier(.22,.61,.36,1) infinite;
+    pointer-events: none;
+  }
+  @keyframes pulseRing {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+  .float-btn-book {
+    background: var(--yellow);
+    color: var(--ink);
+  }
+  .float-btn-book:hover { background: var(--yellow-dark); transform: translateY(-3px) scale(1.08); }
+
+  /* ============ BOOKING MODAL ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.open {
+    display: flex;
+    opacity: 1;
+  }
+  .modal {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px;
+    position: relative;
+    transform: translateY(30px) scale(0.96);
+    transition: transform 0.4s cubic-bezier(.22,.61,.36,1);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+  }
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+  .modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--soft);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+  }
+  .modal-close:hover { background: var(--line); }
+  .modal-label {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--yellow-dark);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .modal-label::before { content: '— '; }
+  .modal-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+  .modal-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 26px;
+    line-height: 1.6;
+  }
+  .modal form .form-field { margin-bottom: 20px; }
+  .modal-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 10px 0 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+  }
+  .modal-section-title:first-of-type { border-top: none; padding-top: 0; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .container { padding: 0 20px; }
+    .nav-inner { padding: 16px 20px; }
+    .nav-links, .nav-social { display: none; }
+    .menu-toggle { display: block; }
+    .hero { padding: 50px 0 100px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 20px; }
+    .hero-img { height: 280px; order: -1; }
+    .hero-img img {
+      position: static;
+      transform: none;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      display: block;
+      animation: bobMobile 6s ease-in-out infinite;
+    }
+    @keyframes bobMobile {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .about-grid, .resp-grid, .contact { grid-template-columns: 1fr; gap: 30px; }
+    .about-img img { width: 100%; margin-left: 0; max-width: 520px; margin: 0 auto; display: block; }
+    .resp-center img { width: 100%; max-width: 520px; margin: 0 auto; display: block; }
+    .resp-grid > div:last-child { order: 3; }
+    .cat-grid, .pickup-grid { grid-template-columns: 1fr; }
+    .section { padding: 70px 0; }
+    .contact-form { padding: 60px 24px; }
+    .contact-visual { min-height: 260px; order: -1; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .stats { flex-direction: row; flex-wrap: wrap; }
+    .stats > div { flex: 1 1 140px; }
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .hero::before { width: 280px; height: 280px; top: -80px; right: -80px; }
+    .modal { padding: 30px 22px; border-radius: 12px; }
+    .modal-title { font-size: 28px; }
+    .lang-toggle { top: 10px; right: 10px; }
+    .lang-toggle button { padding: 6px 12px; font-size: 11px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(60px, 18vw, 90px); }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-cta { gap: 14px; }
+    .btn-primary { padding: 16px 30px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button id="lang-my" class="active" type="button">BM</button>
+  <button id="lang-en" type="button">EN</button>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">HJH<span class="accent">GLOBAL</span></div>
+    <ul class="nav-links">
+      <li><a href="#about" data-t="nav.about">About Us</a></li>
+      <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
+      <li><a href="#pickup" data-t="nav.pickup">Pickup Service</a></li>
+      <li><a href="#contact" data-t="nav.contact">Contact</a></li>
+    </ul>
+    <div class="nav-social">
+      <a href="#" aria-label="Facebook">f</a>
+      <a href="#" aria-label="Instagram">◉</a>
+      <a href="https://wa.me/60123456789" aria-label="WhatsApp" target="_blank" rel="noopener">✆</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-label reveal">— <span data-t="hero.label">Jelajah bebas di</span> <span class="pin">Langkawi</span></div>
+        <h1 class="hero-title reveal delay-1">
+          <span class="block" data-t="hero.title1">SEWA</span>
+          <span class="block" data-t="hero.title2">KERETA</span>
+        </h1>
+        <p class="hero-sub reveal delay-2" data-t="hero.sub">Nikmati percutian tanpa kerunsingan dengan kereta berkualiti dan servis pickup di lapangan terbang, hotel, dan jeti di seluruh Langkawi.</p>
+        <div class="hero-cta reveal delay-3">
+          <button type="button" class="btn-primary" data-book="rental" data-t="hero.book">Tempah Sekarang</button>
+          <a href="#fleet" class="btn-ghost" data-t="hero.fleet">Lihat Fleet</a>
+        </div>
+      </div>
+      <div class="hero-img reveal-right">
+        <img src="image/honda.png" alt="Rental car">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLEET / CATEGORIES -->
+<section class="section" id="fleet">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label reveal" data-t="fleet.label">Pilihan Kereta Kami</div>
+      <h2 class="section-title reveal delay-1" data-t="fleet.title">Our Fleet</h2>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card reveal">
+        <div class="cat-img">
+          <img src="image/sedan.svg" alt="Sedan">
+        </div>
+        <h3 class="cat-name">Sedan</h3>
+        <p class="cat-desc" data-t="fleet.sedan.desc">Selesa dan jimat minyak — sesuai untuk pasangan atau perjalanan pendek.</p>
+        <div class="cat-price" data-t="fleet.sedan.price" data-price="120">Bermula <strong>RM120</strong>/hari</div>
+        <button type="button" class="cat-btn" data-book="rental" data-car="Sedan" data-t="fleet.book">Tempah</button>
+      </div>
+      <div class="cat-card reveal delay-1">
+        <div class="cat-img">
+          <img src="image/mpv.png" alt="MPV">
+        </div>
+        <h3 class="cat-name">MPV</h3>
+        <p class="cat-desc" data-t="fleet.mpv.desc">Muatan keluarga dengan ruang luas untuk bagasi dan penumpang.</p>
+        <div class="cat-price" data-t="fleet.mpv.price" data-price="180">Bermula <strong>RM180</strong>/hari</div>
+        <button type="button" class="cat-btn" data-book="rental" data-car="MPV" data-t="fleet.book">Tempah</button>
+      </div>
+      <div class="cat-card reveal delay-2">
+        <div class="cat-img">
+          <img src="image/van.png" alt="Van">
+        </div>
+        <h3 class="cat-name">Van</h3>
+        <p class="cat-desc" data-t="fleet.van.desc">Pilihan terbaik untuk kumpulan besar — sehingga 14 penumpang.</p>
+        <div class="cat-price" data-t="fleet.van.price" data-price="280">Bermula <strong>RM280</strong>/hari</div>
+        <button type="button" class="cat-btn" data-book="rental" data-car="Van" data-t="fleet.book">Tempah</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal-left">
+        <div class="section-label" data-t="about.label">Meet HJH Global</div>
+        <h2 class="about-title" data-t="about.title">About Us</h2>
+        <p class="about-lead" data-t="about.lead">Rakan sewa kereta yang anda boleh percayai sepanjang percutian di Langkawi.</p>
+        <p class="about-text" data-t="about.p1">HJH Global menawarkan servis sewa kereta mesra pelanggan di seluruh Pulau Langkawi. Dari Sedan untuk perjalanan ringkas, MPV untuk keluarga, hingga Van untuk rombongan besar — kami ada pilihan yang sesuai untuk setiap keperluan anda.</p>
+        <p class="about-text" data-t="about.p2">Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup percuma di lapangan terbang, hotel dan jeti. Anda hanya perlu sampai — kami uruskan yang lain.</p>
+        <a href="#contact" class="btn-primary" style="margin-top: 20px;" data-t="about.cta">Hubungi Kami</a>
+      </div>
+      <div class="about-img reveal-right">
+        <img src="image/mpv.png" alt="Car">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PICKUP SERVICE -->
+<section class="pickup" id="pickup">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label reveal" data-t="pickup.label">Servis Pickup Percuma</div>
+      <h2 class="section-title reveal delay-1" data-t="pickup.title">Kami Jemput Anda</h2>
+    </div>
+    <div class="pickup-grid">
+      <div class="pickup-card reveal">
+        <div class="pickup-icon">✈</div>
+        <h3 class="pickup-name" data-t="pickup.airport.name">Lapangan Terbang</h3>
+        <p class="pickup-text" data-t="pickup.airport.desc">Jemputan di Lapangan Terbang Antarabangsa Langkawi (LGK). Kereta anda akan menunggu sebaik anda sampai.</p>
+        <button type="button" class="pickup-book-btn" data-book="pickup" data-location="Lapangan Terbang Langkawi (LGK)" data-t="pickup.book">Tempah Jemputan</button>
+      </div>
+      <div class="pickup-card reveal delay-1">
+        <div class="pickup-icon">🏨</div>
+        <h3 class="pickup-name" data-t="pickup.hotel.name">Hotel & Resort</h3>
+        <p class="pickup-text" data-t="pickup.hotel.desc">Hantar dan jemput di hotel pilihan anda — Pantai Cenang, Kuah, Datai, atau mana-mana resort di pulau.</p>
+        <button type="button" class="pickup-book-btn" data-book="pickup" data-location="Hotel / Resort" data-t="pickup.book">Tempah Jemputan</button>
+      </div>
+      <div class="pickup-card reveal delay-2">
+        <div class="pickup-icon">⚓</div>
+        <h3 class="pickup-name" data-t="pickup.jetty.name">Jeti Kuah</h3>
+        <p class="pickup-text" data-t="pickup.jetty.desc">Baru turun feri dari Kuala Perlis atau Penang? Kami jemput di Jeti Kuah tanpa caj tambahan.</p>
+        <button type="button" class="pickup-book-btn" data-book="pickup" data-location="Jeti Kuah" data-t="pickup.book">Tempah Jemputan</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESPONSIBILITY / STATS -->
+<section class="resp section">
+  <div class="container">
+    <div class="resp-grid">
+      <div class="reveal-left">
+        <div class="section-label" data-t="resp.label">Sewa Kereta Selamat</div>
+        <h2 class="resp-title" data-t="resp.title">Tanggungjawab</h2>
+        <p class="resp-text" data-t="resp.p1">Keselamatan pelanggan adalah keutamaan kami. Setiap kereta diperiksa sebelum diserahkan kepada anda.</p>
+        <p class="resp-text-muted" data-t="resp.p2">Semua kenderaan dilindungi insurans dan diselenggara secara berkala oleh mekanik bertauliah supaya perjalanan anda tenang dan selesa.</p>
+        <ul class="resp-features">
+          <li data-t="resp.f1">Insurans kemalangan diri</li>
+          <li data-t="resp.f2">Bantuan tepi jalan 24 jam</li>
+          <li data-t="resp.f3">Pilihan insurans tambahan</li>
+        </ul>
+        <button type="button" class="btn-primary" data-book="rental" data-t="resp.cta">Selanjutnya</button>
+      </div>
+      <div class="resp-center reveal-drive">
+        <img src="image/up.svg" alt="Safe van">
+      </div>
+      <div class="stats reveal-right">
+        <div>
+          <div class="stat-num">5+</div>
+          <div class="stat-label" data-t="stats.years">Tahun Pengalaman</div>
+          <div class="stat-desc" data-t="stats.years.desc">Membantu pelancong menjelajah Langkawi dengan selesa.</div>
+        </div>
+        <div>
+          <div class="stat-num">300</div>
+          <div class="stat-label" data-t="stats.clients">Pelanggan Sebulan</div>
+          <div class="stat-desc" data-t="stats.clients.desc">Pelancong tempatan dan antarabangsa mempercayai kami.</div>
+        </div>
+        <div>
+          <div class="stat-num">40</div>
+          <div class="stat-label" data-t="stats.cars">Kereta Tersedia</div>
+          <div class="stat-desc" data-t="stats.cars.desc">Sedan, MPV, dan Van sentiasa bersedia untuk anda.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="contact" id="contact">
+  <div class="contact-form">
+    <div class="section-label" data-t="contact.label">Hantar Permohonan</div>
+    <h2 class="contact-title" data-t="contact.title">Nak Sewa Kereta di Langkawi?</h2>
+    <p class="contact-sub" data-t="contact.sub">Isi borang di bawah, kami akan hubungi anda secepat mungkin untuk pengesahan tempahan.</p>
+    <form id="bookingForm">
+      <div class="form-field">
+        <input type="text" name="name" data-tp="form.name" placeholder="Nama penuh*" required>
+      </div>
+      <div class="form-field">
+        <input type="tel" name="phone" data-tp="form.phone" placeholder="Nombor telefon (WhatsApp)*" required>
+      </div>
+      <div class="form-field">
+        <input type="email" name="email" data-tp="form.email" placeholder="Alamat emel*" required>
+      </div>
+      <div class="form-field">
+        <select name="car" required onchange="this.classList.add('has-value')">
+          <option value="" disabled selected data-t="form.car">Pilih jenis kereta*</option>
+          <option value="sedan">Sedan</option>
+          <option value="mpv">MPV</option>
+          <option value="van">Van</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <select name="location" required onchange="this.classList.add('has-value')">
+          <option value="" disabled selected data-t="form.location">Lokasi pickup*</option>
+          <option value="airport" data-t="form.loc.airport">Lapangan Terbang Langkawi (LGK)</option>
+          <option value="hotel" data-t="form.loc.hotel">Hotel / Resort</option>
+          <option value="jetty" data-t="form.loc.jetty">Jeti Kuah</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <textarea name="note" data-tp="form.note" placeholder="Tarikh sewa & catatan tambahan" rows="2"></textarea>
+      </div>
+      <button type="submit" class="submit-btn" data-t="form.submit">Mohon Sebut Harga</button>
+    </form>
+  </div>
+  <div class="contact-visual"></div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">HJH<span class="accent">GLOBAL</span></div>
+        <p class="footer-about" data-t="footer.about">Servis sewa kereta terpercaya di Langkawi. Sedan, MPV, dan Van dengan pickup percuma di lapangan terbang, hotel dan jeti.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-t="footer.menu">Menu</h4>
+        <ul>
+          <li><a href="#about" data-t="nav.about">About Us</a></li>
+          <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
+          <li><a href="#pickup" data-t="nav.pickup">Pickup Service</a></li>
+          <li><a href="#contact" data-t="nav.contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-t="footer.fleet">Fleet</h4>
+        <ul>
+          <li>Sedan</li>
+          <li>MPV</li>
+          <li>Van</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-t="footer.contact">Hubungi</h4>
+        <ul>
+          <li>📞 +60 1X-XXX XXXX</li>
+          <li>✉ info@hjhglobal.com</li>
+          <li>📍 Langkawi, Kedah</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom" data-t="footer.copy">© 2026 HJH Global. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- ========= FLOATING ACTIONS ========= -->
+<div class="floating-actions">
+  <button type="button" class="float-btn float-btn-book" data-book="rental">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+    <span class="float-label" data-t="float.book">Book Now</span>
+  </button>
+  <a class="float-btn float-btn-wa" href="https://wa.me/60123456789?text=Hi%20HJH%20Global%2C%20saya%20berminat%20untuk%20menyewa%20kereta" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.383 3 4 8.383 4 15c0 2.305.664 4.492 1.82 6.383L4 29l7.797-1.781A11.93 11.93 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3zm0 22c-1.844 0-3.656-.5-5.234-1.445l-.375-.227-4.617 1.055 1.07-4.5-.242-.383A9.93 9.93 0 0 1 6 15c0-5.516 4.484-10 10-10s10 4.484 10 10-4.484 10-10 10zm5.758-7.484c-.313-.156-1.852-.914-2.141-1.02-.289-.102-.5-.156-.711.156-.211.313-.812 1.02-.996 1.234-.184.211-.367.234-.68.078-.313-.156-1.32-.484-2.516-1.547-.93-.828-1.559-1.852-1.742-2.164-.184-.313-.02-.484.137-.641.141-.141.313-.367.469-.551.156-.184.211-.313.313-.523.102-.211.051-.395-.027-.551-.078-.156-.711-1.711-.973-2.344-.258-.617-.52-.531-.711-.539-.184-.008-.395-.008-.605-.008-.211 0-.551.078-.84.395-.289.313-1.102 1.078-1.102 2.625 0 1.547 1.129 3.047 1.289 3.258.156.211 2.227 3.398 5.391 4.766.754.324 1.344.516 1.805.66.758.242 1.445.207 1.992.125.609-.09 1.852-.758 2.113-1.488.258-.73.258-1.355.184-1.488-.078-.133-.285-.211-.598-.367z"/></svg>
+    <span class="float-label">WhatsApp</span>
+  </a>
+</div>
+
+<!-- ========= BOOKING MODAL ========= -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" type="button" aria-label="Close">×</button>
+
+    <div class="modal-label" id="modalLabel" data-t="modal.label">Tempahan Pantas</div>
+    <h3 class="modal-title" id="modalTitle" data-t="modal.title.rental">Tempah Kereta Sewa</h3>
+    <p class="modal-sub" id="modalSub" data-t="modal.sub.rental">Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.</p>
+
+    <form id="quickBookingForm" novalidate>
+      <!-- Service details -->
+      <div class="modal-section-title" id="modalServiceTitle" data-t="modal.service">Perkhidmatan</div>
+
+      <!-- Rental fields -->
+      <div id="rentalFields">
+        <div class="form-field">
+          <select name="car" id="modalCar" onchange="this.classList.add('has-value')">
+            <option value="" disabled selected data-t="form.car">Pilih jenis kereta*</option>
+            <option value="Sedan">Sedan — RM120/day</option>
+            <option value="MPV">MPV — RM180/day</option>
+            <option value="Van">Van — RM280/day</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label style="display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700;" data-t="modal.pickDate">Tarikh & masa pickup*</label>
+            <input type="datetime-local" name="pickupAt" id="rentalPickupAt" required>
+          </div>
+          <div class="form-field">
+            <label style="display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700;" data-t="modal.returnDate">Tarikh & masa return*</label>
+            <input type="datetime-local" name="returnAt" id="rentalReturnAt" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <select name="location" id="rentalLocation" onchange="this.classList.add('has-value')">
+            <option value="" disabled selected data-t="form.location">Lokasi pickup*</option>
+            <option value="Lapangan Terbang Langkawi (LGK)" data-t="form.loc.airport">Lapangan Terbang Langkawi (LGK)</option>
+            <option value="Hotel / Resort" data-t="form.loc.hotel">Hotel / Resort</option>
+            <option value="Jeti Kuah" data-t="form.loc.jetty">Jeti Kuah</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Pickup-only fields -->
+      <div id="pickupFields" style="display:none;">
+        <div class="form-field">
+          <select name="pickupLocation" id="modalPickupLocation" onchange="this.classList.add('has-value')">
+            <option value="" disabled selected data-t="form.location">Lokasi pickup*</option>
+            <option value="Lapangan Terbang Langkawi (LGK)" data-t="form.loc.airport">Lapangan Terbang Langkawi (LGK)</option>
+            <option value="Hotel / Resort" data-t="form.loc.hotel">Hotel / Resort</option>
+            <option value="Jeti Kuah" data-t="form.loc.jetty">Jeti Kuah</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label style="display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700;" data-t="modal.pickDate">Tarikh & masa pickup*</label>
+            <input type="datetime-local" name="pickupAt" id="pickupPickupAt">
+          </div>
+          <div class="form-field">
+            <label style="display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:700;" data-t="modal.pax">Bilangan penumpang*</label>
+            <input type="number" name="pax" id="modalPax" min="1" max="14" placeholder="e.g. 4">
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="modal-section-title" data-t="modal.contact">Maklumat Anda</div>
+      <div class="form-field">
+        <input type="text" name="name" data-tp="form.name" placeholder="Nama penuh*" required>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <input type="tel" name="phone" data-tp="form.phone" placeholder="Nombor WhatsApp*" required>
+        </div>
+        <div class="form-field">
+          <input type="email" name="email" data-tp="form.email" placeholder="Emel*" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <textarea name="note" data-tp="modal.note" placeholder="Catatan tambahan (pilihan)" rows="2"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" style="width:100%;" data-t="modal.submit">Hantar Tempahan</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ============ I18N ============
+  const I18N = {
+    my: {
+      'nav.about': 'About Us',
+      'nav.fleet': 'Fleet Kami',
+      'nav.pickup': 'Servis Pickup',
+      'nav.contact': 'Hubungi',
+
+      'hero.label': 'Jelajah bebas di',
+      'hero.title1': 'SEWA',
+      'hero.title2': 'KERETA',
+      'hero.sub': 'Nikmati percutian tanpa kerunsingan dengan kereta berkualiti dan servis pickup di lapangan terbang, hotel, dan jeti di seluruh Langkawi.',
+      'hero.book': 'Tempah Sekarang',
+      'hero.fleet': 'Lihat Fleet',
+
+      'fleet.label': 'Pilihan Kereta Kami',
+      'fleet.title': 'Fleet Kami',
+      'fleet.sedan.desc': 'Selesa dan jimat minyak — sesuai untuk pasangan atau perjalanan pendek.',
+      'fleet.mpv.desc': 'Muatan keluarga dengan ruang luas untuk bagasi dan penumpang.',
+      'fleet.van.desc': 'Pilihan terbaik untuk kumpulan besar — sehingga 14 penumpang.',
+      'fleet.sedan.price': 'Bermula <strong>RM120</strong>/hari',
+      'fleet.mpv.price': 'Bermula <strong>RM180</strong>/hari',
+      'fleet.van.price': 'Bermula <strong>RM280</strong>/hari',
+      'fleet.book': 'Tempah',
+
+      'about.label': 'Kenali HJH Global',
+      'about.title': 'Tentang Kami',
+      'about.lead': 'Rakan sewa kereta yang anda boleh percayai sepanjang percutian di Langkawi.',
+      'about.p1': 'HJH Global menawarkan servis sewa kereta mesra pelanggan di seluruh Pulau Langkawi. Dari Sedan untuk perjalanan ringkas, MPV untuk keluarga, hingga Van untuk rombongan besar — kami ada pilihan yang sesuai untuk setiap keperluan anda.',
+      'about.p2': 'Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup percuma di lapangan terbang, hotel dan jeti. Anda hanya perlu sampai — kami uruskan yang lain.',
+      'about.cta': 'Hubungi Kami',
+
+      'pickup.label': 'Servis Pickup Percuma',
+      'pickup.title': 'Kami Jemput Anda',
+      'pickup.airport.name': 'Lapangan Terbang',
+      'pickup.airport.desc': 'Jemputan di Lapangan Terbang Antarabangsa Langkawi (LGK). Kereta anda akan menunggu sebaik anda sampai.',
+      'pickup.hotel.name': 'Hotel & Resort',
+      'pickup.hotel.desc': 'Hantar dan jemput di hotel pilihan anda — Pantai Cenang, Kuah, Datai, atau mana-mana resort di pulau.',
+      'pickup.jetty.name': 'Jeti Kuah',
+      'pickup.jetty.desc': 'Baru turun feri dari Kuala Perlis atau Penang? Kami jemput di Jeti Kuah tanpa caj tambahan.',
+      'pickup.book': 'Tempah Jemputan',
+
+      'resp.label': 'Sewa Kereta Selamat',
+      'resp.title': 'Tanggungjawab',
+      'resp.p1': 'Keselamatan pelanggan adalah keutamaan kami. Setiap kereta diperiksa sebelum diserahkan kepada anda.',
+      'resp.p2': 'Semua kenderaan dilindungi insurans dan diselenggara secara berkala oleh mekanik bertauliah supaya perjalanan anda tenang dan selesa.',
+      'resp.f1': 'Insurans kemalangan diri',
+      'resp.f2': 'Bantuan tepi jalan 24 jam',
+      'resp.f3': 'Pilihan insurans tambahan',
+      'resp.cta': 'Selanjutnya',
+
+      'stats.years': 'Tahun Pengalaman',
+      'stats.years.desc': 'Membantu pelancong menjelajah Langkawi dengan selesa.',
+      'stats.clients': 'Pelanggan Sebulan',
+      'stats.clients.desc': 'Pelancong tempatan dan antarabangsa mempercayai kami.',
+      'stats.cars': 'Kereta Tersedia',
+      'stats.cars.desc': 'Sedan, MPV, dan Van sentiasa bersedia untuk anda.',
+
+      'contact.label': 'Hantar Permohonan',
+      'contact.title': 'Nak Sewa Kereta di Langkawi?',
+      'contact.sub': 'Isi borang di bawah, kami akan hubungi anda secepat mungkin untuk pengesahan tempahan.',
+
+      'form.name': 'Nama penuh*',
+      'form.phone': 'Nombor telefon (WhatsApp)*',
+      'form.email': 'Alamat emel*',
+      'form.car': 'Pilih jenis kereta*',
+      'form.location': 'Lokasi pickup*',
+      'form.loc.airport': 'Lapangan Terbang Langkawi (LGK)',
+      'form.loc.hotel': 'Hotel / Resort',
+      'form.loc.jetty': 'Jeti Kuah',
+      'form.note': 'Tarikh sewa & catatan tambahan',
+      'form.submit': 'Mohon Sebut Harga',
+
+      'footer.menu': 'Menu',
+      'footer.fleet': 'Fleet',
+      'footer.contact': 'Hubungi',
+      'footer.about': 'Servis sewa kereta terpercaya di Langkawi. Sedan, MPV, dan Van dengan pickup percuma di lapangan terbang, hotel dan jeti.',
+      'footer.copy': '© 2026 HJH Global. Hak cipta terpelihara.',
+
+      'float.book': 'Tempah',
+
+      'modal.label': 'Tempahan Pantas',
+      'modal.title.rental': 'Tempah Kereta Sewa',
+      'modal.sub.rental': 'Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.',
+      'modal.title.pickup': 'Tempah Servis Jemputan',
+      'modal.sub.pickup': 'Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.',
+      'modal.service': 'Butiran Perkhidmatan',
+      'modal.contact': 'Maklumat Anda',
+      'modal.pickDate': 'Tarikh & masa pickup*',
+      'modal.returnDate': 'Tarikh & masa return*',
+      'modal.pax': 'Bilangan penumpang*',
+      'modal.note': 'Catatan tambahan (pilihan)',
+      'modal.submit': 'Hantar Tempahan'
+    },
+    en: {
+      'nav.about': 'About Us',
+      'nav.fleet': 'Our Fleet',
+      'nav.pickup': 'Pickup Service',
+      'nav.contact': 'Contact',
+
+      'hero.label': 'Explore freely in',
+      'hero.title1': 'RENT',
+      'hero.title2': 'A CAR',
+      'hero.sub': 'Enjoy a worry-free holiday with quality cars and pickup service at the airport, hotel, and jetty across Langkawi.',
+      'hero.book': 'Book Now',
+      'hero.fleet': 'View Fleet',
+
+      'fleet.label': 'Our Car Selection',
+      'fleet.title': 'Our Fleet',
+      'fleet.sedan.desc': 'Comfortable and fuel-efficient — perfect for couples or short trips.',
+      'fleet.mpv.desc': 'Family-sized with plenty of space for luggage and passengers.',
+      'fleet.van.desc': 'Best choice for large groups — up to 14 passengers.',
+      'fleet.sedan.price': 'From <strong>RM120</strong>/day',
+      'fleet.mpv.price': 'From <strong>RM180</strong>/day',
+      'fleet.van.price': 'From <strong>RM280</strong>/day',
+      'fleet.book': 'Book',
+
+      'about.label': 'Meet HJH Global',
+      'about.title': 'About Us',
+      'about.lead': 'Your trusted car rental partner for your Langkawi holiday.',
+      'about.p1': 'HJH Global offers friendly car rental service across Langkawi Island. From Sedans for short trips, MPVs for families, to Vans for big groups — we have the right choice for every need.',
+      'about.p2': 'We value your time, so we provide free pickup service at the airport, hotel, and jetty. Just arrive — we handle the rest.',
+      'about.cta': 'Contact Us',
+
+      'pickup.label': 'Free Pickup Service',
+      'pickup.title': 'We Pick You Up',
+      'pickup.airport.name': 'Airport',
+      'pickup.airport.desc': 'Pickup at Langkawi International Airport (LGK). Your car will be waiting as soon as you arrive.',
+      'pickup.hotel.name': 'Hotel & Resort',
+      'pickup.hotel.desc': 'Drop-off and pickup at your chosen hotel — Pantai Cenang, Kuah, Datai, or any resort on the island.',
+      'pickup.jetty.name': 'Kuah Jetty',
+      'pickup.jetty.desc': 'Just arrived by ferry from Kuala Perlis or Penang? We pick you up at Kuah Jetty at no extra charge.',
+      'pickup.book': 'Book Pickup',
+
+      'resp.label': 'Safe Car Rental',
+      'resp.title': 'Responsibility',
+      'resp.p1': 'Customer safety is our priority. Every car is inspected before being handed to you.',
+      'resp.p2': 'All vehicles are insured and regularly serviced by certified mechanics so your journey is calm and comfortable.',
+      'resp.f1': 'Personal accident insurance',
+      'resp.f2': '24-hour roadside assistance',
+      'resp.f3': 'Additional insurance options',
+      'resp.cta': 'Learn More',
+
+      'stats.years': 'Years of Experience',
+      'stats.years.desc': 'Helping travellers explore Langkawi in comfort.',
+      'stats.clients': 'Customers a Month',
+      'stats.clients.desc': 'Local and international travellers trust us.',
+      'stats.cars': 'Cars Available',
+      'stats.cars.desc': 'Sedans, MPVs, and Vans always ready for you.',
+
+      'contact.label': 'Send Enquiry',
+      'contact.title': 'Want to Rent a Car in Langkawi?',
+      'contact.sub': 'Fill in the form below and we will contact you as soon as possible to confirm your booking.',
+
+      'form.name': 'Full name*',
+      'form.phone': 'Phone number (WhatsApp)*',
+      'form.email': 'Email address*',
+      'form.car': 'Select car type*',
+      'form.location': 'Pickup location*',
+      'form.loc.airport': 'Langkawi Airport (LGK)',
+      'form.loc.hotel': 'Hotel / Resort',
+      'form.loc.jetty': 'Kuah Jetty',
+      'form.note': 'Rental dates & additional notes',
+      'form.submit': 'Request Quote',
+
+      'footer.menu': 'Menu',
+      'footer.fleet': 'Fleet',
+      'footer.contact': 'Contact',
+      'footer.about': 'Trusted car rental service in Langkawi. Sedans, MPVs, and Vans with free pickup at the airport, hotel, and jetty.',
+      'footer.copy': '© 2026 HJH Global. All rights reserved.',
+
+      'float.book': 'Book Now',
+
+      'modal.label': 'Quick Booking',
+      'modal.title.rental': 'Book a Rental Car',
+      'modal.sub.rental': 'Fill in the details below. We will send a confirmation via WhatsApp.',
+      'modal.title.pickup': 'Book Pickup Service',
+      'modal.sub.pickup': 'Fill in the details below. We will send a confirmation via WhatsApp.',
+      'modal.service': 'Service Details',
+      'modal.contact': 'Your Information',
+      'modal.pickDate': 'Pickup date & time*',
+      'modal.returnDate': 'Return date & time*',
+      'modal.pax': 'Number of passengers*',
+      'modal.note': 'Additional notes (optional)',
+      'modal.submit': 'Send Booking'
+    }
+  };
+
+  let currentLang = 'my';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    const dict = I18N[lang];
+    document.documentElement.lang = (lang === 'my' ? 'ms' : 'en');
+
+    // text content
+    document.querySelectorAll('[data-t]').forEach(el => {
+      const key = el.getAttribute('data-t');
+      if (dict[key] !== undefined) {
+        el.innerHTML = dict[key];
+      }
+    });
+
+    // placeholders
+    document.querySelectorAll('[data-tp]').forEach(el => {
+      const key = el.getAttribute('data-tp');
+      if (dict[key] !== undefined) {
+        el.setAttribute('placeholder', dict[key]);
+      }
+    });
+
+    // toggle buttons
+    document.getElementById('lang-my').classList.toggle('active', lang === 'my');
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+
+    // refresh the modal title in case it's open
+    updateModalMode(currentMode, { car: lastBookingContext.car, location: lastBookingContext.location });
+  }
+
+  document.getElementById('lang-my').addEventListener('click', () => applyLang('my'));
+  document.getElementById('lang-en').addEventListener('click', () => applyLang('en'));
+
+  // Load saved preference
+  try {
+    const saved = localStorage.getItem('hjh_lang');
+    if (saved === 'my' || saved === 'en') applyLang(saved);
+  } catch(e) {}
+
+  // ============ SCROLL REVEAL ============
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.14, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => io.observe(el));
+
+  // reveal-drive: bidirectional — re-animates every time user scrolls past
+  const ioDrive = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+      } else {
+        entry.target.classList.remove('in');
+      }
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal-drive').forEach(el => ioDrive.observe(el));
+
+  // ============ MOBILE MENU ============
+  document.querySelector('.menu-toggle')?.addEventListener('click', function() {
+    const links = document.querySelector('.nav-links');
+    const isOpen = links.style.display === 'flex';
+    if (isOpen) {
+      links.style.display = 'none';
+    } else {
+      links.style.display = 'flex';
+      links.style.flexDirection = 'column';
+      links.style.position = 'absolute';
+      links.style.top = '100%';
+      links.style.left = '0';
+      links.style.right = '0';
+      links.style.background = 'white';
+      links.style.padding = '20px';
+      links.style.borderBottom = '1px solid #eee';
+      links.style.gap = '14px';
+    }
+  });
+  // close mobile menu on link click
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        document.querySelector('.nav-links').style.display = 'none';
+      }
+    });
+  });
+
+  // ============ BOOKING MODAL ============
+  const overlay = document.getElementById('modalOverlay');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalSub = document.getElementById('modalSub');
+  const rentalFields = document.getElementById('rentalFields');
+  const pickupFields = document.getElementById('pickupFields');
+  const modalCarSelect = document.getElementById('modalCar');
+  const rentalLocation = document.getElementById('rentalLocation');
+  const modalPickupLocation = document.getElementById('modalPickupLocation');
+
+  let currentMode = 'rental'; // 'rental' | 'pickup'
+  let lastBookingContext = { car: null, location: null };
+
+  function updateModalMode(mode, context = {}) {
+    currentMode = mode;
+    const dict = I18N[currentLang];
+    if (mode === 'rental') {
+      rentalFields.style.display = '';
+      pickupFields.style.display = 'none';
+      modalTitle.textContent = dict['modal.title.rental'];
+      modalSub.textContent = dict['modal.sub.rental'];
+      // mark which fields are required
+      document.getElementById('rentalPickupAt').required = true;
+      document.getElementById('rentalReturnAt').required = true;
+      rentalLocation.required = true;
+      modalCarSelect.required = true;
+      document.getElementById('pickupPickupAt').required = false;
+      document.getElementById('modalPax').required = false;
+      modalPickupLocation.required = false;
+    } else {
+      rentalFields.style.display = 'none';
+      pickupFields.style.display = '';
+      modalTitle.textContent = dict['modal.title.pickup'];
+      modalSub.textContent = dict['modal.sub.pickup'];
+      document.getElementById('rentalPickupAt').required = false;
+      document.getElementById('rentalReturnAt').required = false;
+      rentalLocation.required = false;
+      modalCarSelect.required = false;
+      document.getElementById('pickupPickupAt').required = true;
+      document.getElementById('modalPax').required = true;
+      modalPickupLocation.required = true;
+    }
+
+    // prefill
+    if (context.car && mode === 'rental') {
+      modalCarSelect.value = context.car;
+      modalCarSelect.classList.add('has-value');
+    }
+    if (context.location) {
+      if (mode === 'rental') {
+        rentalLocation.value = context.location;
+        rentalLocation.classList.add('has-value');
+      } else {
+        modalPickupLocation.value = context.location;
+        modalPickupLocation.classList.add('has-value');
+      }
+    }
+  }
+
+  function openModal(mode, context = {}) {
+    lastBookingContext = { car: context.car || null, location: context.location || null };
+    updateModalMode(mode, context);
+
+    // sensible default datetime = now + 1h, rounded
+    const now = new Date();
+    now.setMinutes(0, 0, 0);
+    now.setHours(now.getHours() + 24);
+    const dflt = toLocalInput(now);
+    const ret = new Date(now); ret.setDate(ret.getDate() + 2);
+    const dfltRet = toLocalInput(ret);
+    if (!document.getElementById('rentalPickupAt').value) document.getElementById('rentalPickupAt').value = dflt;
+    if (!document.getElementById('rentalReturnAt').value) document.getElementById('rentalReturnAt').value = dfltRet;
+    if (!document.getElementById('pickupPickupAt').value) document.getElementById('pickupPickupAt').value = dflt;
+
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function toLocalInput(d) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  // wire up any element with data-book
+  document.querySelectorAll('[data-book]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const mode = btn.getAttribute('data-book') || 'rental';
+      const car = btn.getAttribute('data-car') || null;
+      const location = btn.getAttribute('data-location') || null;
+      openModal(mode, { car, location });
+    });
+  });
+
+  document.querySelector('.modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+
+  // submit — compose a WhatsApp message with all details
+  document.getElementById('quickBookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fd = new FormData(this);
+    const dict = I18N[currentLang];
+
+    let lines = [];
+    if (currentMode === 'rental') {
+      const car = fd.get('car');
+      const pickup = fd.get('pickupAt');
+      const ret = fd.get('returnAt');
+      const loc = fd.get('location');
+      if (!car || !pickup || !ret || !loc) { alert(dict['form.car']); return; }
+      lines.push(`*${dict['modal.title.rental']}*`);
+      lines.push(`🚗 ${dict['form.car'].replace('*','')}: ${car}`);
+      lines.push(`📍 ${dict['form.location'].replace('*','')}: ${loc}`);
+      lines.push(`📅 Pickup: ${formatDT(pickup)}`);
+      lines.push(`📅 Return: ${formatDT(ret)}`);
+    } else {
+      const loc = fd.get('pickupLocation');
+      const pickup = fd.get('pickupAt');
+      const pax = fd.get('pax');
+      if (!loc || !pickup || !pax) { alert(dict['modal.pax']); return; }
+      lines.push(`*${dict['modal.title.pickup']}*`);
+      lines.push(`📍 ${dict['form.location'].replace('*','')}: ${loc}`);
+      lines.push(`📅 Pickup: ${formatDT(pickup)}`);
+      lines.push(`👥 ${dict['modal.pax'].replace('*','')}: ${pax}`);
+    }
+
+    lines.push('');
+    lines.push(`👤 ${fd.get('name')}`);
+    lines.push(`📞 ${fd.get('phone')}`);
+    lines.push(`✉ ${fd.get('email')}`);
+    if (fd.get('note')) lines.push(`📝 ${fd.get('note')}`);
+
+    const text = encodeURIComponent(lines.join('\n'));
+    const waNumber = '60123456789'; // change to real number
+    window.open(`https://wa.me/${waNumber}?text=${text}`, '_blank');
+    closeModal();
+    this.reset();
+    document.querySelectorAll('#quickBookingForm select').forEach(s => s.classList.remove('has-value'));
+  });
+
+  function formatDT(v) {
+    if (!v) return '';
+    const d = new Date(v);
+    if (isNaN(d)) return v;
+    const pad = n => String(n).padStart(2,'0');
+    return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  // ============ MAIN CONTACT FORM ============
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const msg = currentLang === 'my'
+      ? 'Terima kasih! Kami akan hubungi anda secepat mungkin.'
+      : 'Thank you! We will contact you as soon as possible.';
+    alert(msg);
+    this.reset();
+    document.querySelectorAll('#bookingForm select').forEach(s => s.classList.remove('has-value'));
+  });
+
+  // save language preference on change
+  ['lang-my','lang-en'].forEach(id => {
+    document.getElementById(id).addEventListener('click', () => {
+      try { localStorage.setItem('hjh_lang', id === 'lang-my' ? 'my' : 'en'); } catch(e) {}
+    });
+  });
+</script>
+
+</body>
+</html>
