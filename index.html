@@ -1027,7 +1027,7 @@
     .hero-cta { gap: 10px; }
 
     .about-grid, .resp-grid, .contact { grid-template-columns: 1fr; gap: 30px; }
-    .about-img img { width: 100%; margin-left: 0; max-width: 480px; margin: 0 auto; display: block; height: 280px; object-fit: contain; }
+    .about-img img { width: 100%; max-width: 100%; margin: 0; display: block; height: 320px; object-fit: cover; object-position: center; border-radius: 12px; }
     /* Fleet cards: image fills full card width edge to edge */
     .cat-card { overflow: hidden; padding: 0 0 28px; }
     .cat-img {
@@ -1200,13 +1200,17 @@
     /* About image: slide from left on scroll down, right on scroll up */
     .about-img {
       margin-top: 10px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
     }
     .about-img img {
       width: 100%;
       max-width: 100%;
-      height: auto;
-      min-height: 0;
-      object-fit: contain;
+      height: 320px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
     /* Slide-in animation for about image — resets on scroll out */
     .about-img.slide-ltr {
@@ -1240,7 +1244,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="#" class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">HJH<span class="accent">GLOBAL</span></a>
+    <a href="index.html" class="logo">HJH<span class="accent">GLOBAL</span></a>
     <ul class="nav-links">
       <li><a href="#about" data-t="nav.about">About Us</a></li>
       <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
