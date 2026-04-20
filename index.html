@@ -188,7 +188,7 @@
   /* ============ HERO ============ */
   .hero {
     position: relative;
-    padding: 120px 0 140px 0;
+    padding: 160px 0 140px 0;
     background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
     overflow: hidden;
   }
@@ -440,6 +440,33 @@
     filter: drop-shadow(0 22px 32px rgba(0,0,0,0.22)) drop-shadow(0 8px 14px rgba(0,0,0,0.10));
     mix-blend-mode: multiply;
     transform: translateY(-12px);
+  }
+
+  /* Berkilat (shine) effect for car display */
+  .cat-img {
+    position: relative;
+    overflow: visible;
+  }
+  .cat-img::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: -60px;
+    width: 60px;
+    height: 180px;
+    background: linear-gradient(120deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.0) 100%);
+    transform: skewX(-20deg) translateX(0);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.7;
+    animation: shineMove 2.8s cubic-bezier(.22,.61,.36,1) infinite;
+  }
+  @keyframes shineMove {
+    0% { left: -60px; opacity: 0; }
+    10% { opacity: 0.7; }
+    50% { left: 100%; opacity: 0.7; }
+    100% { left: 100%; opacity: 0; }
+  }
   }
   .cat-name {
     font-family: 'Barlow Condensed', sans-serif;
@@ -773,8 +800,8 @@
   .submit-btn:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(45,127,249,0.3); }
 
   .contact-visual {
-    background: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200&q=80') center/cover;
-    position: relative;
+      background: url('image/langkawi.jpg') center/cover; /* Tukar link URL tadi kepada path folder image anda */
+      position: relative;
   }
   .contact-visual::after {
     content: '';
@@ -971,7 +998,7 @@
     .menu-toggle { display: block; }
 
     /* ---- HERO: zero gap, tight layout on mobile ---- */
-    .hero { padding: 0 0 70px; overflow: hidden; }
+    .hero { padding: 60 0 70px; overflow: hidden; }
     .hero::before { display: none; }
     .hero-label { margin-bottom: 6px; font-size: 13px; margin-top: 0; }
     .hero-grid {
