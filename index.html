@@ -998,7 +998,7 @@
     .menu-toggle { display: block; }
 
     /* ---- HERO: zero gap, tight layout on mobile ---- */
-    .hero { padding: 20 0 70px; overflow: hidden; }
+    .hero { padding: 10px 0 70px; overflow: hidden; }
     .hero::before { display: none; }
     .hero-label { margin-bottom: 6px; font-size: 13px; margin-top: 0; }
     .hero-grid {
@@ -1121,11 +1121,7 @@
     .resp-center img { width: 100%; max-width: 520px; margin: 0 auto; display: block; }
     .resp-grid > div:last-child { order: 3; }
     .cat-grid, .pickup-grid { grid-template-columns: 1fr; }
-<<<<<<< HEAD
-    .section { padding: 30px 0 40px; }
-=======
-    .section { padding: 50px 0 20px 0; }
->>>>>>> b9d7e6d (Adjust section paddings: more top, less bottom)
+  .section { padding: 50px 0 20px 0; }
     .section-header { margin-bottom: 20px; }
     /* Kill desktop negative margin-top on cat-img inside mobile */
     #fleet .cat-img { margin-top: 0 !important; }
@@ -1276,17 +1272,10 @@
       transform: translateX(0);
     }
     /* Tighten all section paddings on mobile */
-<<<<<<< HEAD
-    .about.section { padding: 30px 0; }
-    .pickup { padding: 30px 0 !important; }
-    .resp.section { padding: 30px 0; }
-    #fleet.section { padding: 24px 0 30px; }
-=======
-    .about.section { padding: 50px 0 20px 0; }
-    .pickup { padding: 50px 0 20px 0 !important; }
-    .resp.section { padding: 50px 0 20px 0; }
-    #fleet.section { padding: 40px 0 20px 0; }
->>>>>>> b9d7e6d (Adjust section paddings: more top, less bottom)
+  .about.section { padding: 50px 0 20px 0; }
+  .pickup { padding: 50px 0 20px 0 !important; }
+  .resp.section { padding: 50px 0 20px 0; }
+  #fleet.section { padding: 40px 0 20px 0; }
     /* Remove about-lead large font on mobile */
     .about-lead { font-size: 16px; margin-bottom: 12px; }
     .about-text { font-size: 14px; margin-bottom: 12px; line-height: 1.6; }
@@ -1403,7 +1392,7 @@
         <h2 class="about-title" data-t="about.title">About Us</h2>
         <p class="about-lead" data-t="about.lead">Rakan sewa kereta yang anda boleh percayai sepanjang percutian di Langkawi.</p>
         <p class="about-text" data-t="about.p1">HJH Global menawarkan servis sewa kereta mesra pelanggan di seluruh Pulau Langkawi. Dari Sedan untuk perjalanan ringkas, MPV untuk keluarga, hingga Van untuk rombongan besar — kami ada pilihan yang sesuai untuk setiap keperluan anda.</p>
-        <p class="about-text" data-t="about.p2">Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup percuma di lapangan terbang, hotel dan jeti. Anda hanya perlu sampai — kami uruskan yang lain.</p>
+        <p class="about-text" data-t="about.p2">Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup <b>berbayar</b> di lapangan terbang, hotel dan jeti (<b>RM20/trip</b>). Anda hanya perlu sampai — kami uruskan yang lain.</p>
         <a href="#contact" class="btn-primary" style="margin-top: 20px;" data-t="about.cta">Hubungi Kami</a>
       </div>
       <div class="about-img reveal-right slide-ltr" id="aboutImg">
@@ -1418,7 +1407,7 @@
 <section class="pickup" id="pickup">
   <div class="container">
     <div class="section-header">
-      <div class="section-label reveal" data-t="pickup.label">Servis Pickup Percuma</div>
+      <div class="section-label reveal" data-t="pickup.label">Servis Pickup <b>Berbayar</b></div>
       <h2 class="section-title reveal delay-1" data-t="pickup.title">Kami Jemput Anda</h2>
     </div>
     <div class="pickup-grid">
@@ -1426,18 +1415,21 @@
         <div class="pickup-icon">✈</div>
         <h3 class="pickup-name" data-t="pickup.airport.name">Lapangan Terbang</h3>
         <p class="pickup-text" data-t="pickup.airport.desc">Jemputan di Lapangan Terbang Antarabangsa Langkawi (LGK). Kereta anda akan menunggu sebaik anda sampai.</p>
+        <div class="pickup-price"><strong>RM20</strong> / trip</div>
         <button type="button" class="pickup-book-btn" data-book="pickup" data-location="Lapangan Terbang Langkawi (LGK)" data-t="pickup.book">Tempah Jemputan</button>
       </div>
       <div class="pickup-card reveal delay-1">
         <div class="pickup-icon">🏨</div>
         <h3 class="pickup-name" data-t="pickup.hotel.name">Hotel & Resort</h3>
         <p class="pickup-text" data-t="pickup.hotel.desc">Hantar dan jemput di hotel pilihan anda — Pantai Cenang, Kuah, Datai, atau mana-mana resort di pulau.</p>
+        <div class="pickup-price"><strong>RM20</strong> / trip</div>
         <button type="button" class="pickup-book-btn" data-book="pickup" data-location="Hotel / Resort" data-t="pickup.book">Tempah Jemputan</button>
       </div>
       <div class="pickup-card reveal delay-2">
         <div class="pickup-icon">⚓</div>
         <h3 class="pickup-name" data-t="pickup.jetty.name">Jeti Kuah</h3>
-        <p class="pickup-text" data-t="pickup.jetty.desc">Baru turun feri dari Kuala Perlis atau Penang? Kami jemput di Jeti Kuah tanpa caj tambahan.</p>
+        <p class="pickup-text" data-t="pickup.jetty.desc">Baru turun feri dari Kuala Perlis atau Penang? Kami jemput di Jeti Kuah.</p>
+        <div class="pickup-price"><strong>RM20</strong> / trip</div>
         <button type="button" class="pickup-book-btn" data-book="pickup" data-location="Jeti Kuah" data-t="pickup.book">Tempah Jemputan</button>
       </div>
     </div>
@@ -1692,17 +1684,17 @@
       'about.title': 'Tentang Kami',
       'about.lead': 'Rakan sewa kereta yang anda boleh percayai sepanjang percutian di Langkawi.',
       'about.p1': 'HJH Global menawarkan servis sewa kereta mesra pelanggan di seluruh Pulau Langkawi. Dari Sedan untuk perjalanan ringkas, MPV untuk keluarga, hingga Van untuk rombongan besar — kami ada pilihan yang sesuai untuk setiap keperluan anda.',
-      'about.p2': 'Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup percuma di lapangan terbang, hotel dan jeti. Anda hanya perlu sampai — kami uruskan yang lain.',
+      'about.p2': 'Kami memahami betapa berharganya masa anda, sebab itulah kami sediakan servis pickup <b>berbayar</b> di lapangan terbang, hotel dan jeti (<b>RM20/trip</b>). Anda hanya perlu sampai — kami uruskan yang lain.',
       'about.cta': 'Hubungi Kami',
 
-      'pickup.label': 'Servis Pickup Percuma',
+      'pickup.label': 'Servis Pickup <b>Berbayar</b>',
       'pickup.title': 'Kami Jemput Anda',
       'pickup.airport.name': 'Lapangan Terbang',
       'pickup.airport.desc': 'Jemputan di Lapangan Terbang Antarabangsa Langkawi (LGK). Kereta anda akan menunggu sebaik anda sampai.',
       'pickup.hotel.name': 'Hotel & Resort',
       'pickup.hotel.desc': 'Hantar dan jemput di hotel pilihan anda — Pantai Cenang, Kuah, Datai, atau mana-mana resort di pulau.',
       'pickup.jetty.name': 'Jeti Kuah',
-      'pickup.jetty.desc': 'Baru turun feri dari Kuala Perlis atau Penang? Kami jemput di Jeti Kuah tanpa caj tambahan.',
+      'pickup.jetty.desc': 'Baru turun feri dari Kuala Perlis atau Penang? Kami jemput di Jeti Kuah.',
       'pickup.book': 'Tempah Jemputan',
 
       'resp.label': 'Sewa Kereta Selamat',
@@ -1744,18 +1736,18 @@
 
       'float.book': 'Tempah',
 
-      'modal.label': 'Tempahan Pantas',
-      'modal.title.rental': 'Tempah Kereta Sewa',
-      'modal.sub.rental': 'Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.',
-      'modal.title.pickup': 'Tempah Servis Jemputan',
-      'modal.sub.pickup': 'Isi butiran di bawah. Kami akan hantar pengesahan melalui WhatsApp.',
-      'modal.service': 'Butiran Perkhidmatan',
-      'modal.contact': 'Maklumat Anda',
-      'modal.pickDate': 'Tarikh & masa pickup*',
-      'modal.returnDate': 'Tarikh & masa return*',
-      'modal.pax': 'Bilangan penumpang*',
-      'modal.note': 'Catatan tambahan (pilihan)',
-      'modal.submit': 'Hantar Tempahan'
+      'modal.label': 'Quick Booking',
+      'modal.title.rental': 'Book a Rental Car',
+      'modal.sub.rental': 'Fill in the details below. We will send a confirmation via WhatsApp.',
+      'modal.title.pickup': 'Book Pickup Service',
+      'modal.sub.pickup': 'Fill in the details below. We will send a confirmation via WhatsApp.',
+      'modal.service': 'Service Details',
+      'modal.contact': 'Your Information',
+      'modal.pickDate': 'Pickup date & time*',
+      'modal.returnDate': 'Return date & time*',
+      'modal.pax': 'Number of passengers*',
+      'modal.note': 'Additional notes (optional)',
+      'modal.submit': 'Send Booking'
     },
     en: {
       'nav.about': 'About Us',
@@ -1784,17 +1776,17 @@
       'about.title': 'About Us',
       'about.lead': 'Your trusted car rental partner for your Langkawi holiday.',
       'about.p1': 'HJH Global offers friendly car rental service across Langkawi Island. From Sedans for short trips, MPVs for families, to Vans for big groups — we have the right choice for every need.',
-      'about.p2': 'We value your time, so we provide free pickup service at the airport, hotel, and jetty. Just arrive — we handle the rest.',
+      'about.p2': 'We value your time, so we provide free pickup service at the airport, hotel, and jeti. Just arrive — we handle the rest.',
       'about.cta': 'Contact Us',
 
-      'pickup.label': 'Free Pickup Service',
-      'pickup.title': 'We Pick You Up',
+      'pickup.label': 'Servis Pickup <b>Berbayar</b>',
+      'pickup.title': 'Kami Jemput Anda',
       'pickup.airport.name': 'Airport',
-      'pickup.airport.desc': 'Pickup at Langkawi International Airport (LGK). Your car will be waiting as soon as you arrive.',
+      'pickup.airport.desc': 'Jemputan di Lapangan Terbang Antarabangsa Langkawi (LGK). Kereta anda akan menunggu sebaik anda sampai.',
       'pickup.hotel.name': 'Hotel & Resort',
-      'pickup.hotel.desc': 'Drop-off and pickup at your chosen hotel — Pantai Cenang, Kuah, Datai, or any resort on the island.',
+      'pickup.hotel.desc': 'Hantar dan jemput di hotel pilihan anda — Pantai Cenang, Kuah, Datai, or any resort on the island.',
       'pickup.jetty.name': 'Kuah Jetty',
-      'pickup.jetty.desc': 'Just arrived by ferry from Kuala Perlis or Penang? We pick you up at Kuah Jetty at no extra charge.',
+      'pickup.jetty.desc': 'Just arrived by ferry from Kuala Perlis or Penang? We pick you up at Kuah Jetty.',
       'pickup.book': 'Book Pickup',
 
       'resp.label': 'Safe Car Rental',
@@ -1831,7 +1823,7 @@
       'footer.menu': 'Menu',
       'footer.fleet': 'Fleet',
       'footer.contact': 'Contact',
-      'footer.about': 'Trusted car rental service in Langkawi. Sedans, MPVs, and Vans with free pickup at the airport, hotel, and jetty.',
+      'footer.about': 'Trusted car rental service in Langkawi. Sedans, MPVs, and Vans with free pickup at the airport, hotel, and jeti.',
       'footer.copy': '© 2026 HJH Global. All rights reserved.',
 
       'float.book': 'Book Now',
