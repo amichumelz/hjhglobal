@@ -1008,6 +1008,24 @@
       0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
       50% { transform: translate(-50%, -50%) translateY(-12px); }
     }
+    /* Override bob with slide LTR triggered by scroll */
+    .hero-img img {
+      animation: none !important;
+    }
+    .hero-img img.slide-hero-in {
+      animation: slideHeroIn 0.7s cubic-bezier(.22,.61,.36,1) forwards !important;
+    }
+    .hero-img img.slide-hero-out {
+      animation: slideHeroOut 0.5s cubic-bezier(.22,.61,.36,1) forwards !important;
+    }
+    @keyframes slideHeroIn {
+      from { transform: translate(-50%, -50%) translateX(60px); opacity: 0.6; }
+      to   { transform: translate(-50%, -50%) translateX(0);    opacity: 1; }
+    }
+    @keyframes slideHeroOut {
+      from { transform: translate(-50%, -50%) translateX(0);    opacity: 1; }
+      to   { transform: translate(-50%, -50%) translateX(-40px); opacity: 0.5; }
+    }
     .hero-title { font-size: clamp(58px, 16vw, 100px); line-height: 0.88; }
     .hero-sub {
       font-size: 11px;
@@ -1027,7 +1045,7 @@
     .hero-cta { gap: 10px; }
 
     .about-grid, .resp-grid, .contact { grid-template-columns: 1fr; gap: 30px; }
-    .about-img img { width: 100%; max-width: 100%; margin: 0; display: block; height: 320px; object-fit: cover; object-position: center; border-radius: 12px; }
+    .about-img img { width: 100%; max-width: 100%; margin: 0; display: block; height: auto; object-fit: contain; object-position: center; border-radius: 0; }
     /* Fleet cards: image fills full card width edge to edge */
     .cat-card { overflow: hidden; padding: 0 0 28px; }
     .cat-img {
@@ -1201,16 +1219,16 @@
     .about-img {
       margin-top: 10px;
       width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
+      border-radius: 0;
+      overflow: visible;
     }
     .about-img img {
       width: 100%;
       max-width: 100%;
-      height: 320px;
-      object-fit: cover;
-      object-position: center;
+      height: auto;
+      object-fit: contain;
       display: block;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.12));
     }
     /* Slide-in animation for about image — resets on scroll out */
     .about-img.slide-ltr {
@@ -1590,6 +1608,13 @@
 </div>
 
 <script>
+
+  // Force scroll to top on every page load (prevent browser restoring hash position)
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   // ============ I18N ============
   const I18N = {
     my: {
@@ -2106,6 +2131,29 @@
         });
       }, { threshold: 0.2 });
       aboutObserver.observe(aboutImg);
+    }
+  }
+
+
+  // ============ HERO CAR SLIDE LTR ON SCROLL (MOBILE) ============
+  if (window.innerWidth <= 900) {
+    const heroCar = document.querySelector('.hero-img img');
+    if (heroCar) {
+      // Trigger slide-in immediately on load
+      heroCar.classList.add('slide-hero-in');
+
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            heroCar.classList.remove('slide-hero-out');
+            heroCar.classList.add('slide-hero-in');
+          } else {
+            heroCar.classList.remove('slide-hero-in');
+            heroCar.classList.add('slide-hero-out');
+          }
+        });
+      }, { threshold: 0.1 });
+      heroObserver.observe(document.querySelector('.hero-img'));
     }
   }
 
