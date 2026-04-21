@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Round Island Tour | HJH Global</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --yellow:#F5B82E; --yellow-dark:#E5A620; --blue:#2D7FF9; --ink:#1A1A1A; --line:#EDEDED; --wa:#25D366; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Barlow', sans-serif; color: #f5f8ff; background: #081325; line-height: 1.5; }
+    .bg-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+    .bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(7,16,32,0.45), rgba(7,16,32,0.62)); z-index: -1; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 56px 48px 90px; }
+    .top-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .top-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .back { text-decoration: none; color: #fff; font-weight: 700; border: 1px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.14); border-radius: 100px; padding: 9px 14px; backdrop-filter: blur(8px); }
+    .badge { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 7px 12px; border-radius: 100px; background: rgba(245,184,46,0.2); color: #946700; border: 1px solid rgba(245,184,46,0.45); }
+    .lang-toggle { display: inline-flex; border: 1px solid rgba(255,255,255,0.35); border-radius: 100px; overflow: hidden; background: rgba(255,255,255,0.14); backdrop-filter: blur(8px); }
+    .lang-toggle button { border: 0; background: transparent; color: #fff; font-weight: 700; padding: 8px 12px; cursor: pointer; font-family: inherit; font-size: 12px; }
+    .lang-toggle button.active { background: var(--yellow); color: var(--ink); }
+    .hero { border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; background: rgba(9,26,50,0.42); backdrop-filter: blur(8px); padding: 36px; margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.22); }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(46px, 8vw, 76px); line-height: 0.95; letter-spacing: -1px; margin-bottom: 10px; }
+    .hero p { max-width: 780px; color: #dbe6f9; font-size: 16px; }
+    .spots { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .spots span { background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 6px 12px; font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 8px; }
+    .card { background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 22px; backdrop-filter: blur(10px); transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease; animation: cardIn .6s ease both; }
+    .card:nth-child(2) { animation-delay: .12s; } .card:nth-child(3) { animation-delay: .24s; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 18px 35px rgba(0,0,0,0.12); }
+    .tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; color: #cfe2ff; }
+    .slot-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+    .slot-btn { border: 1px solid rgba(255,255,255,0.28); border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; padding: 10px 8px; cursor: pointer; transition: all .2s ease; text-align: center; }
+    .slot-btn small { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #d7e2f4; margin-bottom: 4px; font-weight: 700; }
+    .slot-btn strong { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; line-height: 1; }
+    .slot-btn.active { border-color: var(--yellow); background: rgba(245,184,46,0.16); box-shadow: 0 8px 16px rgba(245,184,46,0.22); }
+    .book-btn { border: none; border-radius: 999px; background: var(--yellow); color: var(--ink); font-weight: 800; width: 100%; padding: 12px 16px; cursor: pointer; font-family: inherit; font-size: 14px; transition: all .25s; }
+    .book-btn:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,184,46,0.4); }
+    .note { margin-top: 14px; color: #d5dfef; font-size: 13px; text-align: center; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: center; justify-content: center; z-index: 99; padding: 16px; }
+    .modal.open { display: flex; }
+    .modal-box { width: 100%; max-width: 560px; background: #fff; color: var(--ink); border-radius: 16px; overflow: hidden; animation: modalPop .25s ease; }
+    .modal-head { padding: 16px 18px; background: #f7f9fc; border-bottom: 1px solid #e5ebf4; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .close-btn { border: 0; background: transparent; font-size: 26px; line-height: 1; cursor: pointer; }
+    .modal-content { padding: 18px; }
+    .selected-info { background: #f4f7fc; border: 1px solid #dde6f2; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field { margin-bottom: 10px; }
+    .field label { display: block; font-size: 12px; margin-bottom: 4px; color: #4e5a70; font-weight: 700; }
+    .field input, .field textarea { width: 100%; border: 1px solid #d7e0ec; border-radius: 10px; padding: 10px 12px; font: inherit; }
+    .field textarea { resize: vertical; min-height: 85px; }
+    .submit-btn { border: 0; width: 100%; border-radius: 999px; background: var(--wa); color: white; padding: 12px; font-weight: 700; cursor: pointer; margin-top: 6px; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(24px);} to {opacity:1; transform:translateY(0);} }
+    @keyframes modalPop { from {opacity:0; transform:scale(.96);} to {opacity:1; transform:scale(1);} }
+    @media (max-width: 900px) { .wrap { padding: 28px 18px 60px; } .grid { grid-template-columns: 1fr; } .hero { padding: 24px 18px; } .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <video class="bg-video" autoplay muted loop playsinline poster="image/tour-island.jpg"><source src="image/video.mp4" type="video/mp4"></video>
+  <div class="bg-overlay"></div>
+  <div class="wrap">
+    <div class="top-row">
+      <div class="top-left">
+        <a class="back" href="index.html#tours" data-t="back">← Back to packages</a>
+        <div class="lang-toggle"><button id="lang-my" type="button">BM</button><button id="lang-en" type="button">EN</button></div>
+      </div>
+      <span class="badge" data-t="badge">Premium Tour Page</span>
+    </div>
+    <section class="hero">
+      <h1 data-t="title">Round Island Tour</h1>
+      <p data-t="desc">Jelajah satu hari satu pulau. Pilih terus durasi dan harga dalam card, kemudian tempah melalui popup booking form.</p>
+      <div class="spots"><span data-t="spot.cable">Cable Car</span><span data-t="spot.underwater">Underwater World</span><span data-t="spot.dataran">Dataran Lang</span><span data-t="spot.farm">Taman Buah-buahan</span><span data-t="spot.dream">Dream Forest</span></div>
+    </section>
+    <section class="grid">
+      <article class="card" data-vehicle="Sedan"><div class="tag" data-t="vehicle.sedan">Sedan</div><div class="slot-row"><button type="button" class="slot-btn active" data-duration-my="4 Jam" data-duration-en="4 Hrs" data-price="120"><small data-t="dur4">4 Jam</small><strong>RM120</strong></button><button type="button" class="slot-btn" data-duration-my="8 Jam" data-duration-en="8 Hrs" data-price="200"><small data-t="dur8">8 Jam</small><strong>RM200</strong></button></div><button type="button" class="book-btn" data-t="book">Tempah Sekarang</button></article>
+      <article class="card" data-vehicle="MPV"><div class="tag" data-t="vehicle.mpv">MPV</div><div class="slot-row"><button type="button" class="slot-btn active" data-duration-my="4 Jam" data-duration-en="4 Hrs" data-price="150"><small data-t="dur4">4 Jam</small><strong>RM150</strong></button><button type="button" class="slot-btn" data-duration-my="8 Jam" data-duration-en="8 Hrs" data-price="280"><small data-t="dur8">8 Jam</small><strong>RM280</strong></button></div><button type="button" class="book-btn" data-t="book">Tempah Sekarang</button></article>
+      <article class="card" data-vehicle="Van"><div class="tag" data-t="vehicle.van">Van</div><div class="slot-row"><button type="button" class="slot-btn active" data-duration-my="4 Jam" data-duration-en="4 Hrs" data-price="200"><small data-t="dur4">4 Jam</small><strong>RM200</strong></button><button type="button" class="slot-btn" data-duration-my="8 Jam" data-duration-en="8 Hrs" data-price="380"><small data-t="dur8">8 Jam</small><strong>RM380</strong></button></div><button type="button" class="book-btn" data-t="book">Tempah Sekarang</button></article>
+    </section>
+    <p class="note" data-t="note">* Harga tidak termasuk tiket masuk ke tempat-tempat lawatan.</p>
+  </div>
+  <div class="modal" id="bookingModal">
+    <div class="modal-box">
+      <div class="modal-head"><strong data-t="modal.title">Booking Form</strong><button type="button" class="close-btn" id="closeModal">×</button></div>
+      <form id="bookingForm" class="modal-content">
+        <div class="selected-info" id="selectedInfo"></div>
+        <div class="form-grid">
+          <div class="field"><label for="custName" data-t="form.name">Nama</label><input id="custName" name="custName" required></div>
+          <div class="field"><label for="custPhone" data-t="form.phone">No. Telefon</label><input id="custPhone" name="custPhone" required></div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label for="tourDate" data-t="form.date">Tarikh Tour</label><input id="tourDate" name="tourDate" type="date" required></div>
+          <div class="field"><label for="pickupTime" data-t="form.time">Masa Pickup</label><input id="pickupTime" name="pickupTime" type="time" required></div>
+        </div>
+        <div class="field"><label for="note" data-t="form.note">Catatan Tambahan</label><textarea id="note" name="note" data-tp="form.note.ph" placeholder="Contoh: pickup Pantai Cenang, 5 pax"></textarea></div>
+        <button type="submit" class="submit-btn" data-t="form.submit">Hantar Booking (WhatsApp)</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    var I18N={my:{back:'← Kembali ke pakej',badge:'Halaman Tour Premium',title:'Round Island Tour',desc:'Jelajah satu hari satu pulau. Pilih terus durasi dan harga dalam card, kemudian tempah melalui popup booking form.',"spot.cable":'Cable Car',"spot.underwater":'Underwater World',"spot.dataran":'Dataran Lang',"spot.farm":'Taman Buah-buahan',"spot.dream":'Dream Forest',"vehicle.sedan":'Sedan',"vehicle.mpv":'MPV',"vehicle.van":'Van',dur4:'4 Jam',dur8:'8 Jam',book:'Tempah Sekarang',note:'* Harga tidak termasuk tiket masuk ke tempat-tempat lawatan.',"modal.title":'Borang Tempahan',"form.name":'Nama',"form.phone":'No. Telefon',"form.date":'Tarikh Tour',"form.time":'Masa Pickup',"form.note":'Catatan Tambahan',"form.note.ph":'Contoh: pickup Pantai Cenang, 5 pax',"form.submit":'Hantar Booking (WhatsApp)',selected:'Pakej dipilih:',"msg.intro":'Hi HJH Global, saya nak booking Round Island Tour.',"msg.package":'Pakej',"msg.duration":'Durasi',"msg.price":'Harga',"msg.name":'Nama',"msg.phone":'Telefon',"msg.date":'Tarikh',"msg.time":'Masa Pickup',"msg.note":'Catatan'},en:{back:'← Back to packages',badge:'Premium Tour Page',title:'Round Island Tour',desc:'Explore the island in one day. Select duration and price directly in each card, then book through the popup form.',"spot.cable":'Cable Car',"spot.underwater":'Underwater World',"spot.dataran":'Eagle Square',"spot.farm":'Fruit Farm',"spot.dream":'Dream Forest',"vehicle.sedan":'Sedan',"vehicle.mpv":'MPV',"vehicle.van":'Van',dur4:'4 Hrs',dur8:'8 Hrs',book:'Book Now',note:'* Prices do not include attraction entrance tickets.',"modal.title":'Booking Form',"form.name":'Name',"form.phone":'Phone Number',"form.date":'Tour Date',"form.time":'Pickup Time',"form.note":'Additional Notes',"form.note.ph":'Example: pickup at Pantai Cenang, 5 pax',"form.submit":'Send Booking (WhatsApp)',selected:'Selected package:',"msg.intro":'Hi HJH Global, I want to book Round Island Tour.',"msg.package":'Package',"msg.duration":'Duration',"msg.price":'Price',"msg.name":'Name',"msg.phone":'Phone',"msg.date":'Date',"msg.time":'Pickup Time',"msg.note":'Notes'}};
+    var currentLang='my',cards=document.querySelectorAll('.card'),modal=document.getElementById('bookingModal'),selectedInfo=document.getElementById('selectedInfo'),bookingForm=document.getElementById('bookingForm'),closeModal=document.getElementById('closeModal'),langMyBtn=document.getElementById('lang-my'),langEnBtn=document.getElementById('lang-en'),selectedPackage=null;
+    function applyLang(lang){currentLang=lang;var d=I18N[lang];document.documentElement.lang=(lang==='my'?'ms':'en');document.querySelectorAll('[data-t]').forEach(function(el){var k=el.getAttribute('data-t');if(d[k]!==undefined)el.innerHTML=d[k];});document.querySelectorAll('[data-tp]').forEach(function(el){var k=el.getAttribute('data-tp');if(d[k]!==undefined)el.setAttribute('placeholder',d[k]);});langMyBtn.classList.toggle('active',lang==='my');langEnBtn.classList.toggle('active',lang==='en');if(selectedPackage){selectedInfo.textContent=d.selected+' Round Island Tour ('+selectedPackage.vehicle+') - '+selectedPackage.duration+' - RM'+selectedPackage.price;}try{localStorage.setItem('hjh_lang',lang);}catch(e){}}
+    langMyBtn.addEventListener('click',function(){applyLang('my');});langEnBtn.addEventListener('click',function(){applyLang('en');});
+    cards.forEach(function(card){var slotButtons=card.querySelectorAll('.slot-btn');var bookBtn=card.querySelector('.book-btn');slotButtons.forEach(function(btn){btn.addEventListener('click',function(){slotButtons.forEach(function(s){s.classList.remove('active');});btn.classList.add('active');});});bookBtn.addEventListener('click',function(){var vehicle=card.getAttribute('data-vehicle');var active=card.querySelector('.slot-btn.active');var duration=(currentLang==='en'?active.getAttribute('data-duration-en'):active.getAttribute('data-duration-my'));selectedPackage={vehicle:vehicle,duration:duration,price:active.getAttribute('data-price')};selectedInfo.textContent=I18N[currentLang].selected+' Round Island Tour ('+selectedPackage.vehicle+') - '+selectedPackage.duration+' - RM'+selectedPackage.price;modal.classList.add('open');});});
+    closeModal.addEventListener('click',function(){modal.classList.remove('open');});modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('open');});
+    bookingForm.addEventListener('submit',function(e){e.preventDefault();if(!selectedPackage)return;var name=document.getElementById('custName').value.trim(),phone=document.getElementById('custPhone').value.trim(),date=document.getElementById('tourDate').value,time=document.getElementById('pickupTime').value,note=document.getElementById('note').value.trim(),d=I18N[currentLang];var message=[d['msg.intro'],'',d['msg.package']+': Round Island Tour ('+selectedPackage.vehicle+')',d['msg.duration']+': '+selectedPackage.duration,d['msg.price']+': RM'+selectedPackage.price,d['msg.name']+': '+name,d['msg.phone']+': '+phone,d['msg.date']+': '+date,d['msg.time']+': '+time,d['msg.note']+': '+(note||'-')].join('\n');window.open('https://wa.me/601159658910?text='+encodeURIComponent(message),'_blank');modal.classList.remove('open');bookingForm.reset();});
+    try{var savedLang=localStorage.getItem('hjh_lang');applyLang(savedLang==='en'?'en':'my');}catch(e){applyLang('my');}
+  </script>
+</body>
+</html>
