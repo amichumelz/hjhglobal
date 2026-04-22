@@ -182,6 +182,18 @@
       color: var(--ink);
       text-decoration: none;
       line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 44px;
+      height: 44px;
+      display: block;
+      object-fit: contain;
+      box-shadow: none;
+      filter: none;
     }
 
     .logo .accent {
@@ -2222,7 +2234,8 @@
 
   <nav>
     <div class="nav-inner">
-      <a href="index.html" class="logo">HJH<span class="accent">GLOBAL</span></a>
+      <a href="index.html" class="logo"><img src="image/hjh-logo.png" alt="HJH Global logo" class="logo-mark">HJH<span
+          class="accent">GLOBAL</span></a>
       <ul class="nav-links">
         <li><a href="#intro" data-t="nav.home">Home</a></li>
         <li><a href="#fleet" data-t="nav.fleet">Our Fleet</a></li>
